@@ -25,9 +25,9 @@ const Navigation = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-md shadow-soft transition-all duration-300">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-14 lg:h-16">
+        <div className="flex items-center justify-end h-14 lg:h-16">
           {/* Brand Name Only */}
-          <div>
+          <div className="flex-1">
             <h1 className="font-bold text-base lg:text-lg text-primary-foreground">Dr. Anurag's Dental Clinic</h1>
           </div>
 
@@ -49,7 +49,7 @@ const Navigation = () => {
               onClick={() => scrollToSection('doctors')}
               className="text-primary-foreground hover:text-primary-foreground/70 transition-colors text-sm font-medium"
             >
-              Our Doctors
+              Doctors
             </button>
             <button 
               onClick={() => scrollToSection('services')}
@@ -61,7 +61,7 @@ const Navigation = () => {
               onClick={() => scrollToSection('clinic')}
               className="text-primary-foreground hover:text-primary-foreground/70 transition-colors text-sm font-medium"
             >
-              Our Clinic
+              Clinic
             </button>
             <button 
               onClick={() => scrollToSection('testimonials')}
@@ -114,7 +114,7 @@ const Navigation = () => {
                 onClick={() => scrollToSection('doctors')}
                 className="block w-full text-left py-2 text-primary-foreground hover:text-primary-foreground/70 transition-colors text-sm font-medium"
               >
-                Our Doctors
+                Doctors
               </button>
               <button 
                 onClick={() => scrollToSection('services')}
@@ -126,7 +126,7 @@ const Navigation = () => {
                 onClick={() => scrollToSection('clinic')}
                 className="block w-full text-left py-2 text-primary-foreground hover:text-primary-foreground/70 transition-colors text-sm font-medium"
               >
-                Our Clinic
+                Clinic
               </button>
               <button 
                 onClick={() => scrollToSection('testimonials')}
