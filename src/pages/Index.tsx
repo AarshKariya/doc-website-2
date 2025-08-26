@@ -25,9 +25,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 // Import images
-import heroDentist from '@/assets/hero-dentist.jpg';
-import doctor1 from '@/assets/doctor-1.jpg';
-import doctor2 from '@/assets/doctor-2.jpg';
+import drAnuragAggarwal from '@/assets/dr-anurag-aggarwal.jpg';
+import drKavyaReddy from '@/assets/dr-kavya-reddy.jpg';
+import drVikramSingh from '@/assets/dr-vikram-singh.jpg';
 import servicePreventive from '@/assets/service-preventive.jpg';
 import serviceRestorative from '@/assets/service-restorative.jpg';
 import serviceCosmetic from '@/assets/service-cosmetic.jpg';
@@ -50,7 +50,7 @@ const Index = () => {
       name: 'Dr. Anurag Aggarwal',
       specialization: 'Chief Dentist & Oral Surgeon',
       experience: '20+ Years',
-      image: heroDentist,
+      image: drAnuragAggarwal,
       quote: 'Every smile deserves the finest care. My approach combines cutting-edge technology with compassionate treatment to ensure every patient leaves with confidence.',
       description: 'Dr. Anurag Aggarwal is the founder and chief dentist with over two decades of experience in comprehensive dental care. He specializes in oral surgery, dental implants, and complex restorative procedures.'
     },
@@ -59,7 +59,7 @@ const Index = () => {
       name: 'Dr. Kavya Reddy',
       specialization: 'Cosmetic Dentistry & Orthodontics',
       experience: '15+ Years',
-      image: doctor1,
+      image: drKavyaReddy,
       quote: 'A beautiful smile is not just about aesthetics—it\'s about boosting your confidence and improving your quality of life through expert cosmetic and orthodontic care.',
       description: 'Dr. Kavya Reddy specializes in cosmetic dentistry and orthodontics, helping patients achieve their dream smiles through advanced techniques like invisible braces and porcelain veneers.'
     },
@@ -68,7 +68,7 @@ const Index = () => {
       name: 'Dr. Vikram Singh',
       specialization: 'Periodontics & Preventive Care',
       experience: '18+ Years',
-      image: doctor2,
+      image: drVikramSingh,
       quote: 'Prevention is the best medicine. My focus is on maintaining optimal oral health through preventive care and treating gum diseases with the latest periodontal techniques.',
       description: 'Dr. Vikram Singh is our periodontics specialist, focusing on gum health and preventive care. He has extensive experience in treating gum diseases and maintaining oral hygiene.'
     }
@@ -207,7 +207,7 @@ const Index = () => {
             <div className="relative animate-slide-up">
               <div className="relative">
                 <img 
-                  src={heroDentist} 
+                  src={drAnuragAggarwal} 
                   alt="Dr. Anurag Aggarwal - Chief Dentist"
                   className="w-full max-w-md mx-auto rounded-2xl shadow-medical hover-lift"
                   loading="eager"
