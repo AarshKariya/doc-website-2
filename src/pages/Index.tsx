@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { 
   Calendar, 
   Clock, 
@@ -18,7 +18,6 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
-import useEmblaCarousel from 'embla-carousel-react';
 
 import Navigation from '@/components/Navigation';
 import AppointmentBooking from '@/components/AppointmentBooking';
@@ -49,44 +48,6 @@ const Index = () => {
   
   const [currentDoctor, setCurrentDoctor] = useState(0);
   const [currentClinicImage, setCurrentClinicImage] = useState(0);
-  
-  // Embla carousel for services
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
-    loop: true,
-    align: 'start',
-    skipSnaps: false,
-    dragFree: false
-  });
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
-  
-  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
-  
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setCanScrollPrev(emblaApi.canScrollPrev());
-    setCanScrollNext(emblaApi.canScrollNext());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    console.log('Embla carousel initialized');
-    onSelect();
-    emblaApi.on('select', onSelect);
-    emblaApi.on('reInit', onSelect);
-  }, [emblaApi, onSelect]);
-
-  useEffect(() => {
-    console.log('Services data:', services.length, 'items');
-  }, []);
-
-  // Force a re-render key
-  const [carouselKey, setCarouselKey] = useState(0);
-  useEffect(() => {
-    const timer = setTimeout(() => setCarouselKey(1), 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   const doctors = [
     {
@@ -218,6 +179,26 @@ const Index = () => {
     { icon: Heart, value: '100+', label: 'Dental Camps Conducted' },
     { icon: Star, value: '4.9/5', label: 'Patient Rating' }
   ];
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, observerOptions);
+
+    const elements = document.querySelectorAll('.scroll-reveal');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   // Auto-rotate clinic images
   useEffect(() => {
