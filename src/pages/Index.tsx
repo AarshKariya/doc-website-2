@@ -253,7 +253,7 @@ const Index = () => {
         <div className="absolute inset-0 hero-gradient"></div>
         <div className="absolute inset-0 bg-black/20"></div>
         
-        <div className="relative z-10 container mx-auto px-4 py-12">
+        <div className="relative z-10 container mx-auto px-4 py-8 lg:py-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-6 animate-fade-in">
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
