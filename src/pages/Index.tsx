@@ -524,109 +524,84 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Dynamic 3D Carousel */}
-          <div className="relative max-w-5xl mx-auto">
-            <div className="relative h-80 md:h-96 overflow-hidden rounded-2xl shadow-2xl bg-gradient-to-br from-primary/10 to-accent/10">
+          {/* Enhanced Carousel */}
+          <div className="relative max-w-4xl mx-auto">
+            <div className="relative h-80 md:h-96 overflow-hidden rounded-2xl shadow-2xl bg-gradient-to-br from-primary/5 to-accent/5">
               
-              {/* Image Stack with 3D Effects */}
-              <div className="relative w-full h-full perspective-1000">
-                {clinicImages.map((clinicImage, index) => {
-                  const isActive = index === currentClinicImage;
-                  const isNext = index === (currentClinicImage + 1) % clinicImages.length;
-                  const isPrev = index === (currentClinicImage - 1 + clinicImages.length) % clinicImages.length;
-                  
-                  let transformStyle = '';
-                  let zIndex = 0;
-                  let opacity = 0;
-                  
-                  if (isActive) {
-                    transformStyle = 'translateX(0) rotateY(0deg) scale(1)';
-                    zIndex = 10;
-                    opacity = 1;
-                  } else if (isNext) {
-                    transformStyle = 'translateX(40%) rotateY(-25deg) scale(0.8)';
-                    zIndex = 5;
-                    opacity = 0.7;
-                  } else if (isPrev) {
-                    transformStyle = 'translateX(-40%) rotateY(25deg) scale(0.8)';
-                    zIndex = 5;
-                    opacity = 0.7;
-                  } else {
-                    transformStyle = 'translateX(0) rotateY(0deg) scale(0.6)';
-                    zIndex = 1;
-                    opacity = 0;
-                  }
+              {/* Main Image Display */}
+              <div className="relative w-full h-full">
+                <img
+                  src={clinicImages[currentClinicImage].image}
+                  alt={clinicImages[currentClinicImage].title}
+                  className="w-full h-full object-cover transition-all duration-700 ease-in-out"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                
+                {/* Title overlay */}
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <h3 className="text-2xl font-bold mb-2 animate-fade-in">{clinicImages[currentClinicImage].title}</h3>
+                  <p className="text-white/90 animate-fade-in">{clinicImages[currentClinicImage].description}</p>
+                </div>
+              </div>
 
-                  return (
-                    <div
-                      key={index}
-                      className="absolute inset-0 transition-all duration-700 ease-in-out cursor-pointer"
-                      style={{
-                        transform: transformStyle,
-                        zIndex,
-                        opacity,
-                        transformStyle: 'preserve-3d'
-                      }}
-                      onClick={() => setCurrentClinicImage(index)}
-                    >
-                      <div className="relative w-full h-full rounded-xl overflow-hidden shadow-2xl">
-                        <img
-                          src={clinicImage.image}
-                          alt={clinicImage.title}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-                        
-                        {/* Title overlay for active image */}
-                        {isActive && (
-                          <div className="absolute bottom-6 left-6 right-6 text-white animate-fade-in">
-                            <h3 className="text-2xl font-bold mb-2">{clinicImage.title}</h3>
-                            <p className="text-white/90">{clinicImage.description}</p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+              {/* Preview Thumbnails */}
+              <div className="absolute bottom-4 right-4 flex space-x-2">
+                {clinicImages.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-12 h-8 rounded border-2 cursor-pointer transition-all duration-300 ${
+                      index === currentClinicImage 
+                        ? 'border-white shadow-lg' 
+                        : 'border-white/50 hover:border-white/80'
+                    }`}
+                    onClick={() => setCurrentClinicImage(index)}
+                  >
+                    <img
+                      src={clinicImages[index].image}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-full object-cover rounded"
+                    />
+                  </div>
+                ))}
               </div>
 
               {/* Navigation Arrows */}
               <button
                 onClick={prevClinicImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-primary/20 backdrop-blur-sm text-white shadow-lg hover:bg-primary/40 transition-all duration-300 flex items-center justify-center group"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm text-white shadow-lg hover:bg-white/30 transition-all duration-300 flex items-center justify-center group"
               >
                 <ChevronLeft className="w-7 h-7 group-hover:scale-110 transition-transform" />
               </button>
               
               <button
                 onClick={nextClinicImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-primary/20 backdrop-blur-sm text-white shadow-lg hover:bg-primary/40 transition-all duration-300 flex items-center justify-center group"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm text-white shadow-lg hover:bg-white/30 transition-all duration-300 flex items-center justify-center group"
               >
                 <ChevronRight className="w-7 h-7 group-hover:scale-110 transition-transform" />
               </button>
             </div>
 
-            {/* Indicator Dots */}
-            <div className="flex justify-center mt-6 space-x-3">
+            {/* Progress Bar */}
+            <div className="flex justify-center mt-6 space-x-1">
               {clinicImages.map((_, index) => (
-                <button
+                <div
                   key={index}
-                  onClick={() => setCurrentClinicImage(index)}
-                  className={`transition-all duration-300 ${
+                  className={`h-1 rounded-full transition-all duration-300 cursor-pointer ${
                     index === currentClinicImage
-                      ? 'w-8 h-3 bg-primary rounded-full'
-                      : 'w-3 h-3 bg-primary/30 rounded-full hover:bg-primary/50'
+                      ? 'w-8 bg-primary'
+                      : 'w-4 bg-primary/30 hover:bg-primary/50'
                   }`}
+                  onClick={() => setCurrentClinicImage(index)}
                 />
               ))}
             </div>
 
             {/* Auto-play Indicator */}
             <div className="text-center mt-4">
-              <p className="text-sm text-muted-foreground">
-                <span className="inline-block w-2 h-2 bg-primary rounded-full animate-pulse mr-2"></span>
-                Auto-playing • Click images or arrows to navigate
+              <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
+                <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+                Auto-playing • Click to navigate
               </p>
             </div>
           </div>
