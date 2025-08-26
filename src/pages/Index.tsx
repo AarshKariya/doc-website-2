@@ -45,30 +45,30 @@ const Index = () => {
   const doctors = [
     {
       id: 1,
-      name: 'Dr. Anish Kumar',
+      name: 'Dr. Anurag Aggarwal',
       specialization: 'Chief Dentist & Oral Surgeon',
       experience: '20+ Years',
       image: heroDentist,
       quote: 'Every smile deserves the finest care. My approach combines cutting-edge technology with compassionate treatment to ensure every patient leaves with confidence.',
-      description: 'Dr. Anish Kumar is the founder and chief dentist with over two decades of experience in comprehensive dental care. He specializes in oral surgery, dental implants, and complex restorative procedures.'
+      description: 'Dr. Anurag Aggarwal is the founder and chief dentist with over two decades of experience in comprehensive dental care. He specializes in oral surgery, dental implants, and complex restorative procedures.'
     },
     {
       id: 2,
-      name: 'Dr. Priya Sharma',
+      name: 'Dr. Kavya Reddy',
       specialization: 'Cosmetic Dentistry & Orthodontics',
       experience: '15+ Years',
       image: doctor1,
       quote: 'A beautiful smile is not just about aesthetics—it\'s about boosting your confidence and improving your quality of life through expert cosmetic and orthodontic care.',
-      description: 'Dr. Priya Sharma specializes in cosmetic dentistry and orthodontics, helping patients achieve their dream smiles through advanced techniques like invisible braces and porcelain veneers.'
+      description: 'Dr. Kavya Reddy specializes in cosmetic dentistry and orthodontics, helping patients achieve their dream smiles through advanced techniques like invisible braces and porcelain veneers.'
     },
     {
       id: 3,
-      name: 'Dr. Rajesh Patel',
+      name: 'Dr. Vikram Singh',
       specialization: 'Periodontics & Preventive Care',
       experience: '18+ Years',
       image: doctor2,
       quote: 'Prevention is the best medicine. My focus is on maintaining optimal oral health through preventive care and treating gum diseases with the latest periodontal techniques.',
-      description: 'Dr. Rajesh Patel is our periodontics specialist, focusing on gum health and preventive care. He has extensive experience in treating gum diseases and maintaining oral hygiene.'
+      description: 'Dr. Vikram Singh is our periodontics specialist, focusing on gum health and preventive care. He has extensive experience in treating gum diseases and maintaining oral hygiene.'
     }
   ];
 
@@ -118,7 +118,7 @@ const Index = () => {
       image: patient1,
       profession: 'Teacher',
       rating: 5,
-      text: 'Dr. Anish and his team provided exceptional care during my root canal treatment. The entire process was pain-free and the staff made me feel comfortable throughout. Highly recommend!'
+      text: 'Dr. Anurag and his team provided exceptional care during my root canal treatment. The entire process was pain-free and the staff made me feel comfortable throughout. Highly recommend!'
     },
     {
       name: 'Arjun Mehta',
@@ -126,7 +126,7 @@ const Index = () => {
       image: patient2,
       profession: 'Software Engineer',
       rating: 5,
-      text: 'The teeth whitening treatment exceeded my expectations! Dr. Priya explained every step and the results were amazing. My confidence has improved significantly.'
+      text: 'The teeth whitening treatment exceeded my expectations! Dr. Kavya explained every step and the results were amazing. My confidence has improved significantly.'
     },
     {
       name: 'Ramesh Gupta',
@@ -134,7 +134,7 @@ const Index = () => {
       image: patient3,
       profession: 'Retired Government Officer',
       rating: 5,
-      text: 'After losing several teeth, I thought I\'d never smile confidently again. The dental implants Dr. Anish provided have given me back my smile and ability to eat properly. Excellent work!'
+      text: 'After losing several teeth, I thought I\'d never smile confidently again. The dental implants Dr. Anurag provided have given me back my smile and ability to eat properly. Excellent work!'
     }
   ];
 
@@ -197,7 +197,7 @@ const Index = () => {
                 <span className="text-accent">Our Priority</span>
               </h1>
               <p className="text-xl lg:text-2xl text-white/90 max-w-lg">
-                Established in 2003, Dr. Anish's Dental Clinic has been serving the community with 
+                Established in 2003, Dr. Anurag's Dental Clinic has been serving the community with 
                 exceptional dental care, combining traditional values with modern technology.
               </p>
             </div>
@@ -206,7 +206,7 @@ const Index = () => {
               <div className="relative">
                 <img 
                   src={heroDentist} 
-                  alt="Dr. Anish Kumar - Chief Dentist"
+                  alt="Dr. Anurag Aggarwal - Chief Dentist"
                   className="w-full max-w-md mx-auto rounded-2xl shadow-medical hover-lift"
                   loading="eager"
                 />
@@ -472,7 +472,7 @@ const Index = () => {
                   <span className="text-white font-bold text-xl">DA</span>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-primary">Dr. Anish's</h3>
+                  <h3 className="text-2xl font-bold text-primary">Dr. Anurag's</h3>
                   <p className="text-sm text-muted-foreground">Dental Clinic</p>
                 </div>
               </div>
@@ -569,7 +569,7 @@ const Index = () => {
                   <Mail className="w-5 h-5 text-primary" />
                   <div>
                     <p className="font-medium">Email</p>
-                    <p className="text-muted-foreground text-sm">info@dranishdentalclinic.com</p>
+                    <p className="text-muted-foreground text-sm">info@dranuragsdentalclinic.com</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -585,7 +585,7 @@ const Index = () => {
 
           <div className="border-t border-border mt-12 pt-8 text-center">
             <p className="text-muted-foreground text-sm">
-              © 2024 Dr. Anish's Dental Clinic. All rights reserved. | 
+              © 2024 Dr. Anurag's Dental Clinic. All rights reserved. | 
               <span className="ml-2">Designed with care for your dental health.</span>
             </p>
           </div>

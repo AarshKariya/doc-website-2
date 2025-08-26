@@ -17,9 +17,9 @@ const AppointmentBooking = () => {
   const [showConfetti, setShowConfetti] = useState(false);
 
   const doctors = [
-    { id: 'anish', name: 'Dr. Anish Kumar' },
-    { id: 'priya', name: 'Dr. Priya Sharma' },
-    { id: 'rajesh', name: 'Dr. Rajesh Patel' }
+    { id: 'anurag', name: 'Dr. Anurag Aggarwal' },
+    { id: 'kavya', name: 'Dr. Kavya Reddy' },
+    { id: 'vikram', name: 'Dr. Vikram Singh' }
   ];
 
   const timeSlots = {

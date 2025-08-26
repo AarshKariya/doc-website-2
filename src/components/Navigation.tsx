@@ -28,7 +28,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-14 lg:h-16">
           {/* Brand Name Only */}
           <div>
-            <h1 className="font-bold text-base lg:text-lg text-primary-foreground">Dr. Anish's Dental Clinic</h1>
+            <h1 className="font-bold text-base lg:text-lg text-primary-foreground">Dr. Anurag's Dental Clinic</h1>
           </div>
 
           {/* Desktop Navigation */}
