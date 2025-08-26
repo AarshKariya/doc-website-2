@@ -48,6 +48,7 @@ const Index = () => {
   console.log('Index component is rendering');
   
   const [currentDoctor, setCurrentDoctor] = useState(0);
+  const [currentClinicImage, setCurrentClinicImage] = useState(0);
   
   // Embla carousel for services
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -218,25 +219,21 @@ const Index = () => {
     { icon: Star, value: '4.9/5', label: 'Patient Rating' }
   ];
 
+  // Auto-rotate clinic images
   useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
-      });
-    }, observerOptions);
-
-    const elements = document.querySelectorAll('.scroll-reveal');
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
+    const interval = setInterval(() => {
+      setCurrentClinicImage((prev) => (prev + 1) % clinicImages.length);
+    }, 4000); // Change every 4 seconds
+    return () => clearInterval(interval);
   }, []);
+
+  const nextClinicImage = () => {
+    setCurrentClinicImage((prev) => (prev + 1) % clinicImages.length);
+  };
+
+  const prevClinicImage = () => {
+    setCurrentClinicImage((prev) => (prev - 1 + clinicImages.length) % clinicImages.length);
+  };
 
   const nextDoctor = () => {
     setCurrentDoctor((prev) => (prev + 1) % doctors.length);
@@ -527,63 +524,110 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Clinic Gallery */}
-          <div className="relative">
-            <div 
-              id="clinic-scroll"
-              className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide px-4" 
-              style={{ 
-                scrollbarWidth: 'none', 
-                msOverflowStyle: 'none',
-                scrollBehavior: 'smooth',
-                WebkitOverflowScrolling: 'touch'
-              }}
-            >
-              <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; }`}</style>
-              {clinicImages.map((clinicImage, index) => (
-                <div 
-                  key={index} 
-                  className="flex-none w-[320px] md:w-[380px] snap-center"
-                >
-                  <Card className="hover-lift scroll-reveal shadow-soft h-full transition-transform duration-300 hover:scale-105">
-                    <div className="relative overflow-hidden rounded-lg">
-                      <img 
-                        src={clinicImage.image}
-                        alt={clinicImage.title}
-                        className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
-                        loading="lazy"
-                      />
+          {/* Dynamic 3D Carousel */}
+          <div className="relative max-w-5xl mx-auto">
+            <div className="relative h-80 md:h-96 overflow-hidden rounded-2xl shadow-2xl bg-gradient-to-br from-primary/10 to-accent/10">
+              
+              {/* Image Stack with 3D Effects */}
+              <div className="relative w-full h-full perspective-1000">
+                {clinicImages.map((clinicImage, index) => {
+                  const isActive = index === currentClinicImage;
+                  const isNext = index === (currentClinicImage + 1) % clinicImages.length;
+                  const isPrev = index === (currentClinicImage - 1 + clinicImages.length) % clinicImages.length;
+                  
+                  let transformStyle = '';
+                  let zIndex = 0;
+                  let opacity = 0;
+                  
+                  if (isActive) {
+                    transformStyle = 'translateX(0) rotateY(0deg) scale(1)';
+                    zIndex = 10;
+                    opacity = 1;
+                  } else if (isNext) {
+                    transformStyle = 'translateX(40%) rotateY(-25deg) scale(0.8)';
+                    zIndex = 5;
+                    opacity = 0.7;
+                  } else if (isPrev) {
+                    transformStyle = 'translateX(-40%) rotateY(25deg) scale(0.8)';
+                    zIndex = 5;
+                    opacity = 0.7;
+                  } else {
+                    transformStyle = 'translateX(0) rotateY(0deg) scale(0.6)';
+                    zIndex = 1;
+                    opacity = 0;
+                  }
+
+                  return (
+                    <div
+                      key={index}
+                      className="absolute inset-0 transition-all duration-700 ease-in-out cursor-pointer"
+                      style={{
+                        transform: transformStyle,
+                        zIndex,
+                        opacity,
+                        transformStyle: 'preserve-3d'
+                      }}
+                      onClick={() => setCurrentClinicImage(index)}
+                    >
+                      <div className="relative w-full h-full rounded-xl overflow-hidden shadow-2xl">
+                        <img
+                          src={clinicImage.image}
+                          alt={clinicImage.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                        
+                        {/* Title overlay for active image */}
+                        {isActive && (
+                          <div className="absolute bottom-6 left-6 right-6 text-white animate-fade-in">
+                            <h3 className="text-2xl font-bold mb-2">{clinicImage.title}</h3>
+                            <p className="text-white/90">{clinicImage.description}</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </Card>
-                </div>
+                  );
+                })}
+              </div>
+
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevClinicImage}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-primary/20 backdrop-blur-sm text-white shadow-lg hover:bg-primary/40 transition-all duration-300 flex items-center justify-center group"
+              >
+                <ChevronLeft className="w-7 h-7 group-hover:scale-110 transition-transform" />
+              </button>
+              
+              <button
+                onClick={nextClinicImage}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-primary/20 backdrop-blur-sm text-white shadow-lg hover:bg-primary/40 transition-all duration-300 flex items-center justify-center group"
+              >
+                <ChevronRight className="w-7 h-7 group-hover:scale-110 transition-transform" />
+              </button>
+            </div>
+
+            {/* Indicator Dots */}
+            <div className="flex justify-center mt-6 space-x-3">
+              {clinicImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentClinicImage(index)}
+                  className={`transition-all duration-300 ${
+                    index === currentClinicImage
+                      ? 'w-8 h-3 bg-primary rounded-full'
+                      : 'w-3 h-3 bg-primary/30 rounded-full hover:bg-primary/50'
+                  }`}
+                />
               ))}
             </div>
 
-            {/* Navigation Arrows Only */}
-            <div className="flex justify-center items-center mt-8 space-x-8">
-              <button
-                onClick={() => {
-                  const container = document.getElementById('clinic-scroll');
-                  if (container) {
-                    container.scrollBy({ left: -380, behavior: 'smooth' });
-                  }
-                }}
-                className="w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-
-              <button
-                onClick={() => {
-                  const container = document.getElementById('clinic-scroll');
-                  if (container) {
-                    container.scrollBy({ left: 380, behavior: 'smooth' });
-                  }
-                }}
-                className="w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
+            {/* Auto-play Indicator */}
+            <div className="text-center mt-4">
+              <p className="text-sm text-muted-foreground">
+                <span className="inline-block w-2 h-2 bg-primary rounded-full animate-pulse mr-2"></span>
+                Auto-playing • Click images or arrows to navigate
+              </p>
             </div>
           </div>
         </div>
