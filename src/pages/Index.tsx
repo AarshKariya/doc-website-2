@@ -457,7 +457,8 @@ const Index = () => {
                         src={service.image}
                         alt={service.title}
                         className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
-                        loading="lazy"
+                        loading="eager"
+                        decoding="async"
                       />
                     </div>
                     <CardContent className="p-6">
@@ -483,7 +484,7 @@ const Index = () => {
                 onClick={() => {
                   const container = document.getElementById('services-scroll');
                   if (container) {
-                    container.scrollBy({ left: -200, behavior: 'smooth' });
+                    container.scrollBy({ left: -150, behavior: 'smooth' });
                   }
                 }}
                 className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
@@ -496,7 +497,7 @@ const Index = () => {
                 onClick={() => {
                   const container = document.getElementById('services-scroll');
                   if (container) {
-                    container.scrollBy({ left: 200, behavior: 'smooth' });
+                    container.scrollBy({ left: 150, behavior: 'smooth' });
                   }
                 }}
                 className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
