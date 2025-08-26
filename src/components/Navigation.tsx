@@ -78,7 +78,7 @@ const Navigation = () => {
           </div>
 
           {/* Call Button */}
-          <div className="hidden lg:flex">
+          <div className="hidden lg:flex ml-6">
             <Button onClick={() => scrollToSection('appointment')} variant="secondary" size="sm" className="text-sm">
               Book Appointment
             </Button>
