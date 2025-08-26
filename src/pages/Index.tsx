@@ -677,7 +677,14 @@ const Index = () => {
               <ul className="space-y-3">
                 <li>
                   <button 
-                    onClick={() => document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => {
+                      const element = document.getElementById('home');
+                      if (element) {
+                        const navHeight = 64;
+                        const elementPosition = element.offsetTop - navHeight;
+                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                      }
+                    }}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     Home
@@ -685,7 +692,14 @@ const Index = () => {
                 </li>
                 <li>
                   <button 
-                    onClick={() => document.getElementById('appointment')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => {
+                      const element = document.getElementById('appointment');
+                      if (element) {
+                        const navHeight = 64;
+                        const elementPosition = element.offsetTop - navHeight;
+                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                      }
+                    }}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     Book Appointment
@@ -693,7 +707,14 @@ const Index = () => {
                 </li>
                 <li>
                   <button 
-                    onClick={() => document.getElementById('doctors')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => {
+                      const element = document.getElementById('doctors');
+                      if (element) {
+                        const navHeight = 64;
+                        const elementPosition = element.offsetTop - navHeight;
+                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                      }
+                    }}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     Our Doctors
@@ -701,7 +722,14 @@ const Index = () => {
                 </li>
                 <li>
                   <button 
-                    onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => {
+                      const element = document.getElementById('services');
+                      if (element) {
+                        const navHeight = 64;
+                        const elementPosition = element.offsetTop - navHeight;
+                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                      }
+                    }}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     Services
@@ -709,7 +737,14 @@ const Index = () => {
                 </li>
                 <li>
                   <button 
-                    onClick={() => document.getElementById('clinic')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => {
+                      const element = document.getElementById('clinic');
+                      if (element) {
+                        const navHeight = 64;
+                        const elementPosition = element.offsetTop - navHeight;
+                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                      }
+                    }}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     Our Clinic
@@ -717,7 +752,14 @@ const Index = () => {
                 </li>
                 <li>
                   <button 
-                    onClick={() => document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => {
+                      const element = document.getElementById('testimonials');
+                      if (element) {
+                        const navHeight = 64;
+                        const elementPosition = element.offsetTop - navHeight;
+                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                      }
+                    }}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     Testimonials
