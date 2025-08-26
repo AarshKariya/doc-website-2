@@ -717,7 +717,7 @@ const Index = () => {
                     }}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    Our Doctors
+                    Doctors
                   </button>
                 </li>
                 <li>
@@ -747,7 +747,7 @@ const Index = () => {
                     }}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    Our Clinic
+                    Clinic
                   </button>
                 </li>
                 <li>
