@@ -491,11 +491,6 @@ const Index = () => {
                 <ChevronLeft className="w-5 h-5" />
               </button>
 
-              <div className="flex items-center space-x-3 bg-accent rounded-full px-6 py-3 shadow-soft">
-                <span className="text-sm font-medium text-accent-foreground">
-                  Swipe or use arrows to explore all services
-                </span>
-              </div>
 
               <button
                 onClick={() => {
