@@ -43,7 +43,6 @@ const Index = () => {
   console.log('Index component is rendering');
   
   const [currentDoctor, setCurrentDoctor] = useState(0);
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
   
   // Embla carousel for services
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -205,13 +204,6 @@ const Index = () => {
 
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [testimonials.length]);
 
   const nextDoctor = () => {
     setCurrentDoctor((prev) => (prev + 1) % doctors.length);
@@ -502,50 +494,31 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto scroll-reveal">
-            <Card className="shadow-medical">
-              <CardContent className="p-8 lg:p-12">
-                <div className="grid lg:grid-cols-3 gap-8 items-center">
-                  <div className="text-center lg:text-left">
-                    <img 
-                      src={testimonials[currentTestimonial].image}
-                      alt={testimonials[currentTestimonial].name}
-                      className="w-32 h-32 rounded-full mx-auto lg:mx-0 object-cover shadow-soft mb-4"
-                      loading="lazy"
-                    />
-                    <h4 className="text-xl font-bold text-primary">
-                      {testimonials[currentTestimonial].name}
-                    </h4>
-                    <p className="text-muted-foreground">
-                      {testimonials[currentTestimonial].profession}, {testimonials[currentTestimonial].age}
-                    </p>
-                    <div className="flex justify-center lg:justify-start mt-2">
-                      {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="shadow-soft hover-lift scroll-reveal">
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <div className="flex mb-2">
+                      {[...Array(testimonial.rating)].map((_, i) => (
                         <Star key={i} className="w-4 h-4 fill-current text-yellow-400" />
                       ))}
                     </div>
-                  </div>
-                  
-                  <div className="lg:col-span-2">
-                    <blockquote className="text-lg lg:text-xl italic text-muted-foreground leading-relaxed">
-                      "{testimonials[currentTestimonial].text}"
+                    <blockquote className="text-muted-foreground italic leading-relaxed mb-4">
+                      "{testimonial.text}"
                     </blockquote>
                   </div>
-                </div>
-                
-                <div className="flex justify-center mt-8 space-x-2">
-                  {testimonials.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentTestimonial(index)}
-                      className={`w-3 h-3 rounded-full transition-colors ${
-                        currentTestimonial === index ? 'bg-primary' : 'bg-border'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="border-t border-border pt-4">
+                    <h4 className="text-lg font-bold text-primary">
+                      {testimonial.name}
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      {testimonial.profession}, {testimonial.age}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
