@@ -440,7 +440,7 @@ const Index = () => {
                     <CardContent className="p-6">
                       <h3 className="text-xl font-bold text-primary mb-3">{service.title}</h3>
                       <p className="text-muted-foreground mb-4">{service.description}</p>
-                      <ul className="space-y-2 mb-4">
+                      <ul className="space-y-2">
                         {service.features.map((feature, featureIndex) => (
                           <li key={featureIndex} className="flex items-center text-sm">
                             <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
@@ -448,49 +448,43 @@ const Index = () => {
                           </li>
                         ))}
                       </ul>
-                      <Button variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors">
-                        Learn More
-                      </Button>
                     </CardContent>
                   </Card>
                 </div>
               ))}
             </div>
 
-            {/* Navigation Arrows */}
-            <button
-              onClick={() => {
-                const container = document.getElementById('services-scroll');
-                if (container) {
-                  container.scrollBy({ left: -320, behavior: 'smooth' });
-                }
-              }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            
-            <button
-              onClick={() => {
-                const container = document.getElementById('services-scroll');
-                if (container) {
-                  container.scrollBy({ left: 320, behavior: 'smooth' });
-                }
-              }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
+            {/* Scroll Indicator with Navigation Arrows */}
+            <div className="flex justify-center items-center mt-8 space-x-6">
+              <button
+                onClick={() => {
+                  const container = document.getElementById('services-scroll');
+                  if (container) {
+                    container.scrollBy({ left: -320, behavior: 'smooth' });
+                  }
+                }}
+                className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
 
-            {/* Scroll Indicator */}
-            <div className="flex justify-center mt-8">
               <div className="flex items-center space-x-3 bg-accent rounded-full px-6 py-3 shadow-soft">
-                <ChevronLeft className="w-5 h-5 text-primary animate-pulse" />
                 <span className="text-sm font-medium text-accent-foreground">
-                  Swipe or click arrows to explore all services
+                  Swipe or use arrows to explore all services
                 </span>
-                <ChevronRight className="w-5 h-5 text-primary animate-pulse" />
               </div>
+
+              <button
+                onClick={() => {
+                  const container = document.getElementById('services-scroll');
+                  if (container) {
+                    container.scrollBy({ left: 320, behavior: 'smooth' });
+                  }
+                }}
+                className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>
