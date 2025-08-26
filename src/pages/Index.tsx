@@ -200,14 +200,6 @@ const Index = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Auto-rotate clinic images
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentClinicImage((prev) => (prev + 1) % clinicImages.length);
-    }, 4000); // Change every 4 seconds
-    return () => clearInterval(interval);
-  }, []);
-
   const nextClinicImage = () => {
     setCurrentClinicImage((prev) => (prev + 1) % clinicImages.length);
   };
@@ -517,13 +509,6 @@ const Index = () => {
                   className="w-full h-full object-cover transition-all duration-700 ease-in-out"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                
-                {/* Title overlay */}
-                <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2 animate-fade-in">{clinicImages[currentClinicImage].title}</h3>
-                  <p className="text-white/90 animate-fade-in">{clinicImages[currentClinicImage].description}</p>
-                </div>
               </div>
 
               {/* Preview Thumbnails */}
@@ -576,14 +561,6 @@ const Index = () => {
                   onClick={() => setCurrentClinicImage(index)}
                 />
               ))}
-            </div>
-
-            {/* Auto-play Indicator */}
-            <div className="text-center mt-4">
-              <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
-                <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-                Auto-playing • Click to navigate
-              </p>
             </div>
           </div>
         </div>
