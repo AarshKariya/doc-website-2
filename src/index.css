@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Dental Clinic Design System - Professional Medical Blue Theme
+/* Dental Clinic Design System - Professional Medical Brown Theme
 All colors MUST be HSL.
 */
 
@@ -17,37 +17,37 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 15%;
 
-    /* Medical Blue Primary */
-    --primary: 210 100% 45%;
+    /* Medical Brown Primary */
+    --primary: 30 65% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 210 100% 60%;
-    --primary-dark: 210 100% 35%;
+    --primary-light: 30 65% 60%;
+    --primary-dark: 30 65% 35%;
 
-    /* Navy Secondary */
-    --secondary: 220 40% 15%;
+    /* Warm Brown Secondary */
+    --secondary: 25 50% 25%;
     --secondary-foreground: 0 0% 100%;
 
     /* Light backgrounds */
-    --muted: 210 20% 96%;
-    --muted-foreground: 220 15% 45%;
+    --muted: 30 15% 96%;
+    --muted-foreground: 25 20% 45%;
 
-    /* Accent light blue */
-    --accent: 210 76% 85%;
-    --accent-foreground: 220 15% 15%;
+    /* Accent warm beige */
+    --accent: 35 50% 85%;
+    --accent-foreground: 25 20% 25%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 210 100% 45%;
+    --border: 30 10% 91%;
+    --input: 30 10% 91%;
+    --ring: 30 65% 45%;
 
     --radius: 0.75rem;
 
     /* Custom medical theme colors */
     --medical-success: 142 71% 45%;
     --medical-warning: 43 96% 56%;
-    --medical-info: 210 100% 50%;
+    --medical-info: 30 65% 50%;
     
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
@@ -90,8 +90,8 @@ All colors MUST be HSL.
     --popover: 220 40% 5%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 100% 60%;
-    --primary-foreground: 220 40% 5%;
+    --primary: 30 65% 65%;
+    --primary-foreground: 25 50% 15%;
 
     --secondary: 220 30% 15%;
     --secondary-foreground: 210 40% 98%;
@@ -107,15 +107,15 @@ All colors MUST be HSL.
 
     --border: 220 30% 15%;
     --input: 220 30% 15%;
-    --ring: 210 100% 60%;
+    --ring: 30 65% 65%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 210 100% 50%;
+    --sidebar-primary: 30 65% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent: 25 25% 20%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 210 100% 60%;
+    --sidebar-border: 25 25% 20%;
+    --sidebar-ring: 30 65% 60%;
   }
 }
 
