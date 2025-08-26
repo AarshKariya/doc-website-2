@@ -66,10 +66,22 @@ const Index = () => {
 
   useEffect(() => {
     if (!emblaApi) return;
+    console.log('Embla carousel initialized');
     onSelect();
     emblaApi.on('select', onSelect);
     emblaApi.on('reInit', onSelect);
   }, [emblaApi, onSelect]);
+
+  useEffect(() => {
+    console.log('Services data:', services.length, 'items');
+  }, []);
+
+  // Force a re-render key
+  const [carouselKey, setCarouselKey] = useState(0);
+  useEffect(() => {
+    const timer = setTimeout(() => setCarouselKey(1), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const doctors = [
     {
@@ -398,71 +410,49 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Carousel Container */}
+          {/* Carousel Container - Simple CSS Scroll */}
           <div className="relative">
-            <div className="overflow-hidden" ref={emblaRef}>
-              <div className="flex">
-                {services.map((service, index) => (
-                  <div 
-                    key={index} 
-                    className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_80%] md:flex-[0_0_60%] lg:flex-[0_0_40%] xl:flex-[0_0_33.333%] pl-4"
-                  >
-                    <Card className="hover-lift scroll-reveal shadow-soft h-full mx-2">
-                      <div className="relative overflow-hidden rounded-t-lg">
-                        <img 
-                          src={service.image}
-                          alt={service.title}
-                          className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
-                          loading="lazy"
-                        />
-                      </div>
-                      <CardContent className="p-6">
-                        <h3 className="text-xl font-bold text-primary mb-3">{service.title}</h3>
-                        <p className="text-muted-foreground mb-4">{service.description}</p>
-                        <ul className="space-y-2 mb-4">
-                          {service.features.map((feature, featureIndex) => (
-                            <li key={featureIndex} className="flex items-center text-sm">
-                              <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                        <Button variant="outline" className="w-full">
-                          Learn More
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ))}
-              </div>
+            <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; }`}</style>
+              {services.map((service, index) => (
+                <div 
+                  key={index} 
+                  className="flex-none w-[280px] md:w-[320px] snap-center"
+                >
+                  <Card className="hover-lift scroll-reveal shadow-soft h-full">
+                    <div className="relative overflow-hidden rounded-t-lg">
+                      <img 
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-bold text-primary mb-3">{service.title}</h3>
+                      <p className="text-muted-foreground mb-4">{service.description}</p>
+                      <ul className="space-y-2 mb-4">
+                        {service.features.map((feature, featureIndex) => (
+                          <li key={featureIndex} className="flex items-center text-sm">
+                            <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      <Button variant="outline" className="w-full">
+                        Learn More
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
             </div>
-
-            {/* Navigation Arrows */}
-            <button
-              onClick={scrollPrev}
-              className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center ${
-                !canScrollPrev ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
-              }`}
-              disabled={!canScrollPrev}
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            
-            <button
-              onClick={scrollNext}
-              className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center ${
-                !canScrollNext ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
-              }`}
-              disabled={!canScrollNext}
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
 
             {/* Scroll Indicator */}
             <div className="flex justify-center mt-8 space-x-2">
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <ChevronLeft className="w-4 h-4" />
-                <span className="text-sm">Swipe or use arrows to see more services</span>
+                <span className="text-sm">Scroll horizontally to see more services</span>
                 <ChevronRight className="w-4 h-4" />
               </div>
             </div>
