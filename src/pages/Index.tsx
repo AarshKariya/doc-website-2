@@ -48,6 +48,10 @@ const Index = () => {
   
   const [currentDoctor, setCurrentDoctor] = useState(0);
   const [currentClinicImage, setCurrentClinicImage] = useState(0);
+  
+  // Touch/swipe handling for clinic carousel
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   const doctors = [
     {
@@ -206,6 +210,30 @@ const Index = () => {
 
   const prevClinicImage = () => {
     setCurrentClinicImage((prev) => (prev - 1 + clinicImages.length) % clinicImages.length);
+  };
+
+  // Swipe handling functions
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(0); // Reset touchEnd
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextClinicImage();
+    } else if (isRightSwipe) {
+      prevClinicImage();
+    }
   };
 
   const nextDoctor = () => {
@@ -499,15 +527,21 @@ const Index = () => {
 
           {/* Enhanced Carousel */}
           <div className="relative max-w-4xl mx-auto">
-            <div className="relative h-80 md:h-96 overflow-hidden rounded-2xl shadow-2xl bg-gradient-to-br from-primary/5 to-accent/5">
+            <div 
+              className="relative h-80 md:h-96 overflow-hidden rounded-2xl shadow-2xl bg-gradient-to-br from-primary/5 to-accent/5 touch-pan-y"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               
               {/* Main Image Display */}
-              <div className="relative w-full h-full">
+              <div className="relative w-full h-full select-none">
                 <img
                   src={clinicImages[currentClinicImage].image}
                   alt={clinicImages[currentClinicImage].title}
-                  className="w-full h-full object-cover transition-all duration-700 ease-in-out"
+                  className="w-full h-full object-cover transition-all duration-700 ease-in-out pointer-events-none"
                   loading="lazy"
+                  draggable="false"
                 />
               </div>
 
