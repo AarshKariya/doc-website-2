@@ -301,7 +301,7 @@ const Index = () => {
       </section>
 
       {/* Appointment Booking Section */}
-      <section id="appointment" className="py-20 bg-muted">
+      <section id="appointment" className="py-12 bg-muted">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 scroll-reveal">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
@@ -319,7 +319,7 @@ const Index = () => {
       </section>
 
       {/* Your Dentist Section */}
-      <section id="doctors" className="py-20">
+      <section id="doctors" className="py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 scroll-reveal">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
@@ -405,7 +405,7 @@ const Index = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-primary text-white">
+      <section className="py-12 bg-primary text-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -422,7 +422,7 @@ const Index = () => {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-muted">
+      <section id="services" className="py-12 bg-muted">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 scroll-reveal">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
@@ -509,7 +509,7 @@ const Index = () => {
       </section>
 
       {/* Our Clinic Section */}
-      <section id="clinic" className="py-20 bg-muted">
+      <section id="clinic" className="py-12 bg-muted">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 scroll-reveal">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
@@ -596,7 +596,7 @@ const Index = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20">
+      <section id="testimonials" className="py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 scroll-reveal">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
@@ -637,7 +637,7 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-secondary text-secondary-foreground py-16">
+      <footer id="contact" className="bg-secondary text-secondary-foreground py-12">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Clinic Info */}
