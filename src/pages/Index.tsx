@@ -38,6 +38,11 @@ import serviceOralSurgery from '@/assets/service-oral-surgery.jpg';
 import patient1 from '@/assets/patient-1.jpg';
 import patient2 from '@/assets/patient-2.jpg';
 import patient3 from '@/assets/patient-3.jpg';
+import clinicEntrance from '@/assets/clinic-entrance.jpg';
+import clinicReception from '@/assets/clinic-reception.jpg';
+import clinicTreatmentRoom from '@/assets/clinic-treatment-room.jpg';
+import clinicConsultationOffice from '@/assets/clinic-consultation-office.jpg';
+import clinicWaitingArea from '@/assets/clinic-waiting-area.jpg';
 
 const Index = () => {
   console.log('Index component is rendering');
@@ -148,6 +153,34 @@ const Index = () => {
       description: 'Advanced surgical procedures including extractions, wisdom tooth removal, and jaw surgery.',
       image: serviceOralSurgery,
       features: ['Tooth Extractions', 'Wisdom Tooth Removal', 'Jaw Surgery', 'Dental Implant Surgery']
+    }
+  ];
+
+  const clinicImages = [
+    {
+      title: 'Clinic Entrance',
+      description: 'Modern and welcoming entrance to our dental facility',
+      image: clinicEntrance
+    },
+    {
+      title: 'Reception Area',
+      description: 'Professional front desk and comfortable waiting space',
+      image: clinicReception
+    },
+    {
+      title: 'Treatment Room',
+      description: 'State-of-the-art dental equipment and comfortable patient care',
+      image: clinicTreatmentRoom
+    },
+    {
+      title: 'Consultation Office',
+      description: 'Private consultation space for treatment discussions',
+      image: clinicConsultationOffice
+    },
+    {
+      title: 'Waiting Area',
+      description: 'Comfortable seating area for patients and families',
+      image: clinicWaitingArea
     }
   ];
 
@@ -482,6 +515,91 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Our Clinic Section */}
+      <section id="clinic" className="py-20 bg-muted">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12 scroll-reveal">
+            <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
+              Our Modern Clinic
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Take a virtual tour of our state-of-the-art dental facility designed for your comfort and care.
+            </p>
+          </div>
+
+          {/* Clinic Gallery */}
+          <div className="relative">
+            <div 
+              id="clinic-scroll"
+              className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide px-4" 
+              style={{ 
+                scrollbarWidth: 'none', 
+                msOverflowStyle: 'none',
+                scrollBehavior: 'smooth',
+                WebkitOverflowScrolling: 'touch'
+              }}
+            >
+              <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; }`}</style>
+              {clinicImages.map((clinicImage, index) => (
+                <div 
+                  key={index} 
+                  className="flex-none w-[320px] md:w-[380px] snap-center"
+                >
+                  <Card className="hover-lift scroll-reveal shadow-soft h-full transition-transform duration-300 hover:scale-105">
+                    <div className="relative overflow-hidden rounded-t-lg">
+                      <img 
+                        src={clinicImage.image}
+                        alt={clinicImage.title}
+                        className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                      <div className="absolute bottom-4 left-4 right-4 text-white">
+                        <h3 className="text-xl font-bold mb-1">{clinicImage.title}</h3>
+                        <p className="text-sm text-white/90">{clinicImage.description}</p>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              ))}
+            </div>
+
+            {/* Scroll Indicator with Navigation Arrows */}
+            <div className="flex justify-center items-center mt-8 space-x-6">
+              <button
+                onClick={() => {
+                  const container = document.getElementById('clinic-scroll');
+                  if (container) {
+                    container.scrollBy({ left: -380, behavior: 'smooth' });
+                  }
+                }}
+                className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <div className="flex items-center space-x-3 bg-accent rounded-full px-6 py-3 shadow-soft">
+                <span className="text-sm font-medium text-accent-foreground">
+                  Explore our clinic facilities
+                </span>
+              </div>
+
+              <button
+                onClick={() => {
+                  const container = document.getElementById('clinic-scroll');
+                  if (container) {
+                    container.scrollBy({ left: 380, behavior: 'smooth' });
+                  }
+                }}
+                className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Section */}
       <section id="testimonials" className="py-20">
         <div className="container mx-auto px-4">
@@ -592,6 +710,14 @@ const Index = () => {
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     Services
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => document.getElementById('clinic')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    Our Clinic
                   </button>
                 </li>
                 <li>
