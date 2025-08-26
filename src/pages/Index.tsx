@@ -483,7 +483,7 @@ const Index = () => {
                 onClick={() => {
                   const container = document.getElementById('services-scroll');
                   if (container) {
-                    container.scrollBy({ left: -320, behavior: 'smooth' });
+                    container.scrollBy({ left: -200, behavior: 'smooth' });
                   }
                 }}
                 className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
@@ -496,7 +496,7 @@ const Index = () => {
                 onClick={() => {
                   const container = document.getElementById('services-scroll');
                   if (container) {
-                    container.scrollBy({ left: 320, behavior: 'smooth' });
+                    container.scrollBy({ left: 200, behavior: 'smooth' });
                   }
                 }}
                 className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
