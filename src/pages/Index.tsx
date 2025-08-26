@@ -39,6 +39,8 @@ import patient2 from '@/assets/patient-2.jpg';
 import patient3 from '@/assets/patient-3.jpg';
 
 const Index = () => {
+  console.log('Index component is rendering');
+  
   const [currentDoctor, setCurrentDoctor] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
