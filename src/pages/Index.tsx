@@ -410,14 +410,21 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Carousel Container - Simple CSS Scroll */}
-          <div className="relative">
-            <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; }`}</style>
+          {/* Carousel Container - Force Horizontal Scroll */}
+          <div className="relative bg-red-100 p-4 border-4 border-red-500">
+            <p className="text-center text-red-600 font-bold mb-4">SERVICES CAROUSEL - SHOULD SCROLL HORIZONTALLY</p>
+            <div className="w-full overflow-x-scroll overflow-y-hidden" style={{ 
+              display: 'flex', 
+              flexWrap: 'nowrap', 
+              gap: '1rem',
+              scrollBehavior: 'smooth',
+              WebkitOverflowScrolling: 'touch'
+            }}>
               {services.map((service, index) => (
                 <div 
                   key={index} 
-                  className="flex-none w-[280px] md:w-[320px] snap-center"
+                  className="flex-shrink-0 bg-blue-200 border-2 border-blue-500"
+                  style={{ width: '300px', minWidth: '300px' }}
                 >
                   <Card className="hover-lift scroll-reveal shadow-soft h-full">
                     <div className="relative overflow-hidden rounded-t-lg">
@@ -447,14 +454,8 @@ const Index = () => {
                 </div>
               ))}
             </div>
-
-            {/* Scroll Indicator */}
-            <div className="flex justify-center mt-8 space-x-2">
-              <div className="flex items-center space-x-2 text-muted-foreground">
-                <ChevronLeft className="w-4 h-4" />
-                <span className="text-sm">Scroll horizontally to see more services</span>
-                <ChevronRight className="w-4 h-4" />
-              </div>
+            <div className="text-center mt-4 text-red-600 font-bold">
+              ↑ SCROLL LEFT/RIGHT ABOVE ↑ - Services: {services.length} cards
             </div>
           </div>
         </div>
