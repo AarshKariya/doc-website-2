@@ -27,7 +27,7 @@ import { Card, CardContent } from '@/components/ui/card';
 // Import images
 import drAnuragAggarwal from '@/assets/dr-anurag-aggarwal.jpg';
 import drKavyaReddy from '@/assets/dr-kavya-reddy.jpg';
-import drVikramSingh from '@/assets/dr-vikram-singh.jpg';
+import drVikramSingh from '@/assets/dr-vikram-singh-new.jpg';
 import servicePreventive from '@/assets/service-preventive.jpg';
 import serviceRestorative from '@/assets/service-restorative.jpg';
 import serviceCosmetic from '@/assets/service-cosmetic.jpg';
