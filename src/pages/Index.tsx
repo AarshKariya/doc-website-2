@@ -410,23 +410,25 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Carousel Container - Force Horizontal Scroll */}
-          <div className="relative bg-red-100 p-4 border-4 border-red-500">
-            <p className="text-center text-red-600 font-bold mb-4">SERVICES CAROUSEL - SHOULD SCROLL HORIZONTALLY</p>
-            <div className="w-full overflow-x-scroll overflow-y-hidden" style={{ 
-              display: 'flex', 
-              flexWrap: 'nowrap', 
-              gap: '1rem',
-              scrollBehavior: 'smooth',
-              WebkitOverflowScrolling: 'touch'
-            }}>
+          {/* Services Carousel */}
+          <div className="relative">
+            <div 
+              id="services-scroll"
+              className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide px-4" 
+              style={{ 
+                scrollbarWidth: 'none', 
+                msOverflowStyle: 'none',
+                scrollBehavior: 'smooth',
+                WebkitOverflowScrolling: 'touch'
+              }}
+            >
+              <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; }`}</style>
               {services.map((service, index) => (
                 <div 
                   key={index} 
-                  className="flex-shrink-0 bg-blue-200 border-2 border-blue-500"
-                  style={{ width: '300px', minWidth: '300px' }}
+                  className="flex-none w-[280px] md:w-[320px] snap-center"
                 >
-                  <Card className="hover-lift scroll-reveal shadow-soft h-full">
+                  <Card className="hover-lift scroll-reveal shadow-soft h-full transition-transform duration-300 hover:scale-105">
                     <div className="relative overflow-hidden rounded-t-lg">
                       <img 
                         src={service.image}
@@ -446,7 +448,7 @@ const Index = () => {
                           </li>
                         ))}
                       </ul>
-                      <Button variant="outline" className="w-full">
+                      <Button variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors">
                         Learn More
                       </Button>
                     </CardContent>
@@ -454,8 +456,41 @@ const Index = () => {
                 </div>
               ))}
             </div>
-            <div className="text-center mt-4 text-red-600 font-bold">
-              ↑ SCROLL LEFT/RIGHT ABOVE ↑ - Services: {services.length} cards
+
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => {
+                const container = document.getElementById('services-scroll');
+                if (container) {
+                  container.scrollBy({ left: -320, behavior: 'smooth' });
+                }
+              }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            
+            <button
+              onClick={() => {
+                const container = document.getElementById('services-scroll');
+                if (container) {
+                  container.scrollBy({ left: 320, behavior: 'smooth' });
+                }
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Scroll Indicator */}
+            <div className="flex justify-center mt-8">
+              <div className="flex items-center space-x-3 bg-accent rounded-full px-6 py-3 shadow-soft">
+                <ChevronLeft className="w-5 h-5 text-primary animate-pulse" />
+                <span className="text-sm font-medium text-accent-foreground">
+                  Swipe or click arrows to explore all services
+                </span>
+                <ChevronRight className="w-5 h-5 text-primary animate-pulse" />
+              </div>
             </div>
           </div>
         </div>
