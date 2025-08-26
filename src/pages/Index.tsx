@@ -520,10 +520,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 scroll-reveal">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
-              Our Modern Clinic
+              Our Clinic in Pics
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Take a virtual tour of our state-of-the-art dental facility designed for your comfort and care.
+              Take a virtual tour of our facility designed for your comfort and care.
             </p>
           </div>
 
@@ -546,26 +546,21 @@ const Index = () => {
                   className="flex-none w-[320px] md:w-[380px] snap-center"
                 >
                   <Card className="hover-lift scroll-reveal shadow-soft h-full transition-transform duration-300 hover:scale-105">
-                    <div className="relative overflow-hidden rounded-t-lg">
+                    <div className="relative overflow-hidden rounded-lg">
                       <img 
                         src={clinicImage.image}
                         alt={clinicImage.title}
                         className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                      <div className="absolute bottom-4 left-4 right-4 text-white">
-                        <h3 className="text-xl font-bold mb-1">{clinicImage.title}</h3>
-                        <p className="text-sm text-white/90">{clinicImage.description}</p>
-                      </div>
                     </div>
                   </Card>
                 </div>
               ))}
             </div>
 
-            {/* Scroll Indicator with Navigation Arrows */}
-            <div className="flex justify-center items-center mt-8 space-x-6">
+            {/* Navigation Arrows Only */}
+            <div className="flex justify-center items-center mt-8 space-x-8">
               <button
                 onClick={() => {
                   const container = document.getElementById('clinic-scroll');
@@ -573,16 +568,10 @@ const Index = () => {
                     container.scrollBy({ left: -380, behavior: 'smooth' });
                   }
                 }}
-                className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
+                className="w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-6 h-6" />
               </button>
-
-              <div className="flex items-center space-x-3 bg-accent rounded-full px-6 py-3 shadow-soft">
-                <span className="text-sm font-medium text-accent-foreground">
-                  Explore our clinic facilities
-                </span>
-              </div>
 
               <button
                 onClick={() => {
@@ -591,9 +580,9 @@ const Index = () => {
                     container.scrollBy({ left: 380, behavior: 'smooth' });
                   }
                 }}
-                className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
+                className="w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-6 h-6" />
               </button>
             </div>
           </div>
