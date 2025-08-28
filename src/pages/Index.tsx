@@ -330,76 +330,91 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="relative max-w-4xl mx-auto scroll-reveal">
-            <div className="bg-gradient-to-br from-background to-muted rounded-3xl p-8 lg:p-12 shadow-medical">
-              <div className="grid lg:grid-cols-2 gap-8 items-center">
-                <div className="order-2 lg:order-1">
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-2xl lg:text-3xl font-bold text-primary mb-2">
-                        {doctors[currentDoctor].name}
-                      </h3>
-                      <p className="text-lg text-accent mb-1">
-                        {doctors[currentDoctor].specialization}
-                      </p>
-                      <p className="text-primary font-semibold">
-                        {doctors[currentDoctor].experience}
-                      </p>
+          {/* Doctors Carousel */}
+          <div className="relative">
+            <div 
+              id="doctors-scroll"
+              className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide px-4" 
+              style={{ 
+                scrollbarWidth: 'none', 
+                msOverflowStyle: 'none',
+                scrollBehavior: 'smooth',
+                WebkitOverflowScrolling: 'touch'
+              }}
+            >
+              <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; }`}</style>
+              {doctors.map((doctor, index) => (
+                <div 
+                  key={index} 
+                  className="min-w-[90%] md:min-w-[600px] snap-center scroll-reveal"
+                >
+                  <div className="bg-gradient-to-br from-background to-muted rounded-3xl p-8 lg:p-12 shadow-medical">
+                    <div className="grid lg:grid-cols-2 gap-8 items-center">
+                      <div className="order-2 lg:order-1">
+                        <div className="space-y-6">
+                          <div>
+                            <h3 className="text-2xl lg:text-3xl font-bold text-primary mb-2">
+                              {doctor.name}
+                            </h3>
+                            <p className="text-lg text-accent mb-1">
+                              {doctor.specialization}
+                            </p>
+                            <p className="text-primary font-semibold">
+                              {doctor.experience}
+                            </p>
+                          </div>
+                          
+                          <blockquote className="text-lg italic text-muted-foreground border-l-4 border-primary pl-6">
+                            "{doctor.quote}"
+                          </blockquote>
+                          
+                          <p className="text-muted-foreground leading-relaxed">
+                            {doctor.description}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="order-1 lg:order-2 relative">
+                        <img 
+                          src={doctor.image}
+                          alt={doctor.name}
+                          className="w-full max-w-sm mx-auto rounded-2xl shadow-soft hover-lift transition-all duration-500"
+                          loading="eager"
+                          decoding="async"
+                        />
+                      </div>
                     </div>
-                    
-                    <blockquote className="text-lg italic text-muted-foreground border-l-4 border-primary pl-6">
-                      "{doctors[currentDoctor].quote}"
-                    </blockquote>
-                    
-                    <p className="text-muted-foreground leading-relaxed">
-                      {doctors[currentDoctor].description}
-                    </p>
                   </div>
                 </div>
-                
-                <div className="order-1 lg:order-2 relative">
-                  <img 
-                    src={doctors[currentDoctor].image}
-                    alt={doctors[currentDoctor].name}
-                    className="w-full max-w-sm mx-auto rounded-2xl shadow-soft hover-lift transition-all duration-500"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-              
-              {/* Navigation */}
-              <div className="flex items-center justify-center mt-8 space-x-4">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={prevDoctor}
-                  className="rounded-full p-3"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </Button>
-                
-                <div className="flex space-x-2">
-                  {doctors.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentDoctor(index)}
-                      className={`w-3 h-3 rounded-full transition-colors ${
-                        currentDoctor === index ? 'bg-primary' : 'bg-border'
-                      }`}
-                    />
-                  ))}
-                </div>
-                
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={nextDoctor}
-                  className="rounded-full p-3"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              </div>
+              ))}
             </div>
+            
+            {/* Navigation Controls */}
+            <button
+              onClick={() => {
+                const container = document.getElementById('doctors-scroll');
+                if (container) {
+                  container.scrollBy({ left: -600, behavior: 'smooth' });
+                }
+              }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110 z-10"
+              aria-label="Previous doctor"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            
+            <button
+              onClick={() => {
+                const container = document.getElementById('doctors-scroll');
+                if (container) {
+                  container.scrollBy({ left: 600, behavior: 'smooth' });
+                }
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110 z-10"
+              aria-label="Next doctor"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </section>
