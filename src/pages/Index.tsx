@@ -52,6 +52,10 @@ const Index = () => {
   // Touch/swipe handling for clinic carousel
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  
+  // Touch/swipe handling for doctors section
+  const [doctorTouchStart, setDoctorTouchStart] = useState(0);
+  const [doctorTouchEnd, setDoctorTouchEnd] = useState(0);
 
   const doctors = [
     {
@@ -236,6 +240,31 @@ const Index = () => {
     }
   };
 
+  
+  // Doctor swipe handling functions
+  const handleDoctorTouchStart = (e: React.TouchEvent) => {
+    setDoctorTouchEnd(0); // Reset touchEnd
+    setDoctorTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleDoctorTouchMove = (e: React.TouchEvent) => {
+    setDoctorTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleDoctorTouchEnd = () => {
+    if (!doctorTouchStart || !doctorTouchEnd) return;
+    
+    const distance = doctorTouchStart - doctorTouchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextDoctor();
+    } else if (isRightSwipe) {
+      prevDoctor();
+    }
+  };
+
   const nextDoctor = () => {
     setCurrentDoctor((prev) => (prev + 1) % doctors.length);
   };
@@ -331,7 +360,12 @@ const Index = () => {
           </div>
 
           <div className="relative max-w-4xl mx-auto scroll-reveal">
-            <div className="bg-gradient-to-br from-background to-muted rounded-3xl p-8 lg:p-12 shadow-medical">
+            <div 
+              className="bg-gradient-to-br from-background to-muted rounded-3xl p-8 lg:p-12 shadow-medical touch-pan-y"
+              onTouchStart={handleDoctorTouchStart}
+              onTouchMove={handleDoctorTouchMove}
+              onTouchEnd={handleDoctorTouchEnd}
+            >
               <div className="grid lg:grid-cols-2 gap-8 items-center">
                 <div className="order-2 lg:order-1">
                   <div className="space-y-6">
