@@ -130,8 +130,8 @@ const Index = () => {
 
   const clinicImages = [
     {
-      title: 'Clinic Entrance',
-      description: 'Modern and welcoming entrance to our dental facility',
+      title: 'Entrance',
+      description: 'Modern and welcoming facility entrance',
       image: clinicEntrance
     },
     {
