@@ -37,7 +37,7 @@ import serviceOralSurgery from '@/assets/service-oral-surgery.jpg';
 import patient1 from '@/assets/patient-1.jpg';
 import patient2 from '@/assets/patient-2.jpg';
 import patient3 from '@/assets/patient-3.jpg';
-import clinicEntrance from '@/assets/clinic-entrance.jpg';
+import clinicEntrance from '@/assets/generic-clinic-entrance.jpg';
 import clinicReception from '@/assets/clinic-reception.jpg';
 import clinicTreatmentRoom from '@/assets/clinic-treatment-room.jpg';
 import clinicConsultationOffice from '@/assets/clinic-consultation-office.jpg';
