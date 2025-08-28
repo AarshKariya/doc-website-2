@@ -48,6 +48,8 @@ const Index = () => {
   
   const [currentDoctor, setCurrentDoctor] = useState(0);
   const [currentClinicImage, setCurrentClinicImage] = useState(0);
+  const [doctorImageLoaded, setDoctorImageLoaded] = useState<boolean[]>([]);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   
   // Touch/swipe handling for clinic carousel
   const [touchStart, setTouchStart] = useState(0);
@@ -188,6 +190,27 @@ const Index = () => {
     { icon: Star, value: '4.9/5', label: 'Patient Rating' }
   ];
 
+  // Preload all doctor images on component mount
+  useEffect(() => {
+    const imageLoadPromises = doctors.map((doctor, index) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          setDoctorImageLoaded(prev => {
+            const newState = [...prev];
+            newState[index] = true;
+            return newState;
+          });
+          resolve(true);
+        };
+        img.onerror = () => resolve(false);
+        img.src = doctor.image;
+      });
+    });
+
+    Promise.all(imageLoadPromises);
+  }, [doctors]);
+
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
@@ -266,11 +289,19 @@ const Index = () => {
   };
 
   const nextDoctor = () => {
-    setCurrentDoctor((prev) => (prev + 1) % doctors.length);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentDoctor((prev) => (prev + 1) % doctors.length);
+      setIsTransitioning(false);
+    }, 150);
   };
 
   const prevDoctor = () => {
-    setCurrentDoctor((prev) => (prev - 1 + doctors.length) % doctors.length);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentDoctor((prev) => (prev - 1 + doctors.length) % doctors.length);
+      setIsTransitioning(false);
+    }, 150);
   };
 
   return (
@@ -392,13 +423,30 @@ const Index = () => {
                 </div>
                 
                 <div className="order-1 lg:order-2 relative">
-                  <img 
-                    src={doctors[currentDoctor].image}
-                    alt={doctors[currentDoctor].name}
-                    className="w-full max-w-sm mx-auto rounded-2xl shadow-soft hover-lift transition-all duration-500"
-                    loading="eager"
-                    decoding="async"
-                  />
+                  <div className="relative w-full max-w-sm mx-auto h-80 rounded-2xl overflow-hidden shadow-soft">
+                    {/* Hidden preloader images */}
+                    {doctors.map((doctor, index) => (
+                      <img
+                        key={`preload-${index}`}
+                        src={doctor.image}
+                        alt=""
+                        className="absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none"
+                        loading="eager"
+                        decoding="async"
+                      />
+                    ))}
+                    
+                    {/* Visible doctor image */}
+                    <img 
+                      src={doctors[currentDoctor].image}
+                      alt={doctors[currentDoctor].name}
+                      className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 hover-lift ${
+                        isTransitioning ? 'opacity-70 scale-95' : 'opacity-100 scale-100'
+                      }`}
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </div>
                 </div>
               </div>
               
