@@ -53,8 +53,6 @@ const AppointmentBooking = () => {
     loadDoctors();
   }, []);
 
-  // Removed automatic scroll behavior to prevent unwanted navigation on page refresh
-
   useEffect(() => {
     const loadSlots = async () => {
       if (selectedDoctor) {
@@ -95,7 +93,6 @@ const AppointmentBooking = () => {
 
   const handleNextStep = () => {
     dispatch({ type: "NEXT_STEP" });
-    // Scroll to top of appointment section after step transition
     setTimeout(() => {
       scrollToAppointmentTop();
     }, 100);
@@ -103,7 +100,6 @@ const AppointmentBooking = () => {
 
   const handlePreviousStep = () => {
     dispatch({ type: "PREVIOUS_STEP" });
-    // Scroll to top of appointment section after step transition
     setTimeout(() => {
       scrollToAppointmentTop();
     }, 100);
