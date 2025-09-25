@@ -34,7 +34,6 @@ const StepIndicator = ({ currentStep, className }: StepIndicatorProps) => {
   return (
     <div className={cn("w-full max-w-4xl mx-auto mb-8", className)}>
       <div className="flex items-center justify-between relative">
-        {/* Background line */}
         <div className="absolute top-6 left-0 right-0 h-0.5 bg-gray-200 -z-10" />
 
         {steps.map((step, index) => {

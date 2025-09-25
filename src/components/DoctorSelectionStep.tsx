@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import DoctorSelection from "@/components/DoctorSelection";
+import DoctorSelection from "./DoctorSelection";
 import { Doctor } from "@/types/api";
 
 interface DoctorSelectionStepProps {
@@ -19,7 +19,6 @@ const DoctorSelectionStep = ({
 }: DoctorSelectionStepProps) => {
   return (
     <div className="space-y-6">
-      {/* Doctor Selection */}
       <DoctorSelection
         doctors={doctors}
         selectedDoctorId={selectedDoctorId}
@@ -28,7 +27,6 @@ const DoctorSelectionStep = ({
         title="Choose a doctor"
       />
 
-      {/* Next Button */}
       <div className="flex justify-end">
         <Button
           onClick={onNext}
