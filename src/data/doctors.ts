@@ -30,7 +30,7 @@ export interface UIDoctor {
 
 export const DOCTORS: UIDoctor[] = [
   {
-    primary_key: "fallback_anurag",
+    primary_key: "6932daebfe5b43538f5cda02b5b374fd",
     facility_id: API_CONFIG_EXPORT.facilityId,
     employee_id: "E314864344",
     member_username: "dr_anurag_aggarwal",
@@ -54,7 +54,7 @@ export const DOCTORS: UIDoctor[] = [
     image: drAnuragImage,
   },
   {
-    primary_key: "fallback_kavya",
+    primary_key: "7842daebfe5b43538f5cda02b5b374fe",
     facility_id: API_CONFIG_EXPORT.facilityId,
     employee_id: "E314864345",
     member_username: "dr_kavya_reddy",
@@ -78,7 +78,7 @@ export const DOCTORS: UIDoctor[] = [
     image: drKavyaImage,
   },
   {
-    primary_key: "fallback_vikram",
+    primary_key: "8952daebfe5b43538f5cda02b5b374ff",
     facility_id: API_CONFIG_EXPORT.facilityId,
     employee_id: "E314864346",
     member_username: "dr_vikram_singh",

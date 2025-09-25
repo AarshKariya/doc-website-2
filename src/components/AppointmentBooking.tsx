@@ -32,7 +32,6 @@ const AppointmentBooking = () => {
     [doctors, selectedDoctor]
   );
 
-  // Auto scroll top on step change
   useEffect(() => {
     containerRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -42,14 +41,19 @@ const AppointmentBooking = () => {
 
   useEffect(() => {
     const loadSlots = async () => {
-      if (selectedDoctor && selectedDate) {
+      if (selectedDoctor) {
         try {
           console.log("📅 Loading appointment slots from API...");
 
           if (selectedDoctorData && selectedDoctorData.primary_key) {
+            // Use tomorrow's date to get slots for the week
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowDate = tomorrow.toISOString().split("T")[0];
+
             const response = await realApiClient.getAppointmentSlots(
               selectedDoctorData.primary_key,
-              selectedDate
+              tomorrowDate
             );
             dispatch({ type: "SET_API_SLOTS", payload: response });
             console.log("✅ Slots loaded:", response);
@@ -65,7 +69,7 @@ const AppointmentBooking = () => {
     };
 
     loadSlots();
-  }, [selectedDoctor, selectedDate, selectedDoctorData]);
+  }, [selectedDoctor, selectedDoctorData]);
 
   const handleNextStep = () => {
     dispatch({ type: "NEXT_STEP" });
@@ -211,6 +215,7 @@ const AppointmentBooking = () => {
             selectedDate={selectedDate}
             selectedTime={selectedTime}
             selectedDoctor={selectedDoctorData}
+            apiSlots={apiSlots}
             onDateSelect={(date) =>
               dispatch({ type: "SET_SELECTED_DATE", payload: date })
             }

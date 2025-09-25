@@ -2,6 +2,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import DoctorCard from "./DoctorCard";
+import { AppointmentSchedule } from "@/types/api";
 
 interface Doctor {
   employee_id: string;
@@ -15,6 +16,7 @@ interface Step2DateTimeSelectionProps {
   selectedDate: string;
   selectedTime: string;
   selectedDoctor: Doctor | null;
+  apiSlots: AppointmentSchedule[];
   onDateSelect: (date: string) => void;
   onTimeSelect: (time: string) => void;
   onNext: () => void;
@@ -25,6 +27,7 @@ const Step2DateTimeSelection = ({
   selectedDate,
   selectedTime,
   selectedDoctor,
+  apiSlots,
   onDateSelect,
   onTimeSelect,
   onNext,
@@ -33,7 +36,6 @@ const Step2DateTimeSelection = ({
   const transformDoctorForCard = (doctor: Doctor) => {
     const doctorName = doctor.display_name || `Doctor ${doctor.employee_id}`;
 
-    // Generate consistent testimonial, availability, and working hours
     const generateHash = (str: string) => {
       return str.split("").reduce((a, b) => {
         a = (a << 5) - a + b.charCodeAt(0);
@@ -77,11 +79,10 @@ const Step2DateTimeSelection = ({
   const generateDates = () => {
     const dates = [];
     const today = new Date();
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 7; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
       if (date.getDay() !== 0) {
-        // Skip Sundays
         dates.push({
           value: date.toISOString().split("T")[0],
           day: date.toLocaleDateString("en-US", { weekday: "short" }),
@@ -93,20 +94,50 @@ const Step2DateTimeSelection = ({
     return dates;
   };
 
-  const timeSlots = [
-    "10:30",
-    "11:30",
-    "12:30",
-    "13:30",
-    "16:00",
-    "17:00",
-    "18:00",
-    "19:00",
-  ];
+  // Extract time slots from API response
+  const getTimeSlotsForDay = (dayOfWeek: string) => {
+    const scheduleForDay = apiSlots.find(
+      (s) => s.day_of_the_week === dayOfWeek
+    );
+    if (!scheduleForDay || !scheduleForDay.is_working) {
+      return [];
+    }
+
+    // Generate time slots based on session intervals
+    const timeSlots: { time: string; available: boolean }[] = [];
+    scheduleForDay.sessions.forEach((session) => {
+      const startTime = session.start_time;
+      const endTime = session.end_time;
+      const duration = session.duration_mins;
+      const isAvailable = session.status;
+
+      // Parse start and end times
+      const [startHour, startMin] = startTime.split(":").map(Number);
+      const [endHour, endMin] = endTime.split(":").map(Number);
+
+      const startMinutes = startHour * 60 + startMin;
+      const endMinutes = endHour * 60 + endMin;
+
+      // Generate slots every duration minutes
+      for (
+        let minutes = startMinutes;
+        minutes < endMinutes;
+        minutes += duration
+      ) {
+        const hour = Math.floor(minutes / 60);
+        const min = minutes % 60;
+        const timeString = `${hour.toString().padStart(2, "0")}:${min
+          .toString()
+          .padStart(2, "0")}`;
+        timeSlots.push({ time: timeString, available: isAvailable });
+      }
+    });
+
+    return timeSlots;
+  };
 
   return (
     <div className="space-y-6">
-      {/* Selected Doctor Card - Full Card from Step 1 */}
       {selectedDoctor && (
         <div className="max-w-md">
           <DoctorCard
@@ -118,7 +149,6 @@ const Step2DateTimeSelection = ({
         </div>
       )}
 
-      {/* Date and Time Selection */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-gray-900">
           Choose date and time
@@ -126,71 +156,69 @@ const Step2DateTimeSelection = ({
 
         <Card>
           <CardContent className="p-6">
-            {/* Navigation */}
             <div className="flex items-center justify-between mb-6">
               <ChevronLeft className="w-5 h-5 text-gray-400 cursor-pointer" />
               <ChevronRight className="w-5 h-5 text-gray-400 cursor-pointer" />
             </div>
 
-            {/* Date Headers and Time Slots */}
-            <div className="grid grid-cols-4 gap-4">
-              {generateDates().map((dateInfo, dateIndex) => (
-                <div key={dateInfo.value} className="space-y-3">
-                  {/* Date Header */}
-                  <div className="text-center pb-2 border-b border-gray-100">
-                    <div className="text-sm font-medium text-gray-900">
-                      {dateInfo.day}
+            <div className="flex justify-between gap-1">
+              {generateDates().map((dateInfo) => {
+                const scheduleForDay = apiSlots.find(
+                  (s) => s.day_of_the_week === dateInfo.day
+                );
+                const isDayWorking =
+                  !!scheduleForDay && scheduleForDay.is_working;
+                return (
+                  <div key={dateInfo.value} className="flex-1 space-y-3">
+                    <div className="text-center pb-2 border-b border-gray-100">
+                      <div className="text-sm font-medium text-gray-900">
+                        {dateInfo.day}
+                      </div>
+                      <div className="text-lg font-semibold text-blue-600">
+                        {dateInfo.date} {dateInfo.month}
+                      </div>
                     </div>
-                    <div className="text-lg font-semibold text-blue-600">
-                      {dateInfo.date} {dateInfo.month}
+
+                    <div className="space-y-2">
+                      {getTimeSlotsForDay(dateInfo.day).map((slot) => {
+                        const isSelected =
+                          selectedDate === dateInfo.value &&
+                          selectedTime === slot.time;
+                        const isUnavailable = !isDayWorking || !slot.available;
+
+                        return (
+                          <Button
+                            key={`${dateInfo.value}-${slot.time}`}
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              if (!isUnavailable) {
+                                onDateSelect(dateInfo.value);
+                                onTimeSelect(slot.time);
+                              }
+                            }}
+                            disabled={isUnavailable}
+                            className={`w-full text-sm transition-colors ${
+                              isSelected
+                                ? "bg-primary text-white border-primary hover:bg-primary/90"
+                                : isUnavailable
+                                ? "bg-gray-200 text-gray-400 border-gray-200 cursor-not-allowed hover:bg-gray-200"
+                                : "bg-blue-600 text-white border-blue-600 hover:bg-blue-700"
+                            }`}
+                          >
+                            {slot.time}
+                          </Button>
+                        );
+                      })}
                     </div>
                   </div>
-
-                  {/* Time Slots */}
-                  <div className="space-y-2">
-                    {timeSlots.map((time) => {
-                      const isSelected =
-                        selectedDate === dateInfo.value &&
-                        selectedTime === time;
-                      const isUnavailable =
-                        (dateIndex + timeSlots.indexOf(time)) % 3 === 0; // Mock availability
-                      const isHighlighted = dateIndex === 3 && time === "12:30"; // Orange highlight
-
-                      return (
-                        <Button
-                          key={`${dateInfo.value}-${time}`}
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            if (!isUnavailable) {
-                              onDateSelect(dateInfo.value);
-                              onTimeSelect(time);
-                            }
-                          }}
-                          disabled={isUnavailable}
-                          className={`w-full text-sm transition-colors ${
-                            isSelected
-                              ? "bg-primary text-white border-primary hover:bg-primary/90"
-                              : isHighlighted && !isSelected
-                              ? "bg-orange-500 text-white border-orange-500 hover:bg-orange-600"
-                              : isUnavailable
-                              ? "bg-gray-200 text-gray-400 border-gray-200 cursor-not-allowed hover:bg-gray-200"
-                              : "bg-blue-600 text-white border-blue-600 hover:bg-blue-700"
-                          }`}
-                        >
-                          {time}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Navigation Buttons */}
       <div className="flex justify-between">
         <Button variant="outline" onClick={onPrevious}>
           Previous

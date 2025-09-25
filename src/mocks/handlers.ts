@@ -157,23 +157,23 @@ export const handlers = [
         );
       }
 
-      // Generate mock schedule
+      // Generate mock schedule with fewer slots and some unselectable ones
       const mockSchedule: AppointmentSchedule[] = [
         {
           day_of_the_week: "Mon",
           is_working: true,
           sessions: [
             {
-              start_time: "10:00:00",
-              end_time: "13:00:00",
+              start_time: "10:30:00",
+              end_time: "12:30:00",
               duration_mins: 30,
               status: true,
             },
             {
               start_time: "15:00:00",
-              end_time: "19:00:00",
+              end_time: "16:30:00",
               duration_mins: 30,
-              status: true,
+              status: false, // Unselectable
             },
           ],
         },
@@ -182,16 +182,16 @@ export const handlers = [
           is_working: true,
           sessions: [
             {
-              start_time: "09:00:00",
-              end_time: "12:00:00",
+              start_time: "11:00:00",
+              end_time: "12:30:00",
               duration_mins: 30,
               status: true,
             },
             {
-              start_time: "14:00:00",
-              end_time: "18:00:00",
+              start_time: "14:30:00",
+              end_time: "16:00:00",
               duration_mins: 30,
-              status: true,
+              status: false, // Unselectable
             },
           ],
         },
@@ -200,16 +200,16 @@ export const handlers = [
           is_working: true,
           sessions: [
             {
-              start_time: "10:00:00",
-              end_time: "13:00:00",
+              start_time: "10:30:00",
+              end_time: "12:00:00",
               duration_mins: 30,
               status: true,
             },
             {
-              start_time: "15:00:00",
-              end_time: "19:00:00",
+              start_time: "15:30:00",
+              end_time: "17:00:00",
               duration_mins: 30,
-              status: true,
+              status: false, // Unselectable
             },
           ],
         },
@@ -218,16 +218,16 @@ export const handlers = [
           is_working: true,
           sessions: [
             {
-              start_time: "09:00:00",
-              end_time: "12:00:00",
+              start_time: "11:30:00",
+              end_time: "13:00:00",
               duration_mins: 30,
               status: true,
             },
             {
               start_time: "14:00:00",
-              end_time: "18:00:00",
+              end_time: "15:30:00",
               duration_mins: 30,
-              status: true,
+              status: false, // Unselectable
             },
           ],
         },
@@ -236,10 +236,16 @@ export const handlers = [
           is_working: true,
           sessions: [
             {
-              start_time: "11:00:00",
-              end_time: "18:00:00",
+              start_time: "10:00:00",
+              end_time: "11:30:00",
               duration_mins: 30,
               status: true,
+            },
+            {
+              start_time: "12:00:00",
+              end_time: "13:30:00",
+              duration_mins: 30,
+              status: false, // Unselectable
             },
           ],
         },
@@ -248,10 +254,16 @@ export const handlers = [
           is_working: true,
           sessions: [
             {
-              start_time: "09:00:00",
-              end_time: "14:00:00",
+              start_time: "09:30:00",
+              end_time: "11:00:00",
               duration_mins: 30,
               status: true,
+            },
+            {
+              start_time: "11:30:00",
+              end_time: "13:00:00",
+              duration_mins: 30,
+              status: false, // Unselectable
             },
           ],
         },
