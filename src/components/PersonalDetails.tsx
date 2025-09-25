@@ -4,6 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Doctor } from "@/types/api";
+import {
+  validateField,
+  PersonalDetailsFormData,
+} from "@/validations/personalDetails";
+import { useState } from "react";
 
 interface PersonalDetailsProps {
   patientName: string;
@@ -20,6 +25,14 @@ interface PersonalDetailsProps {
   isSubmitting?: boolean;
 }
 
+interface ValidationErrors {
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  email?: string;
+  phone?: string;
+}
+
 const PersonalDetails = ({
   patientName,
   patientPhone,
@@ -34,16 +47,56 @@ const PersonalDetails = ({
   onPrevious,
   isSubmitting = false,
 }: PersonalDetailsProps) => {
+  const [errors, setErrors] = useState<ValidationErrors>({});
+  const [dateOfBirth, setDateOfBirth] = useState<string>("");
+
   const nameParts = patientName.split(" ");
   const firstName = nameParts[0] || "";
   const lastName = nameParts.slice(1).join(" ") || "";
 
+  const validateAndSetError = (
+    field: keyof ValidationErrors,
+    value: string
+  ) => {
+    const validation = validateField(field, value);
+    setErrors((prev) => ({
+      ...prev,
+      [field]: validation.isValid ? undefined : validation.error,
+    }));
+  };
+
   const handleFirstNameChange = (first: string) => {
     onNameChange(`${first} ${lastName}`.trim());
+    validateAndSetError("firstName", first);
   };
 
   const handleLastNameChange = (last: string) => {
     onNameChange(`${firstName} ${last}`.trim());
+    validateAndSetError("lastName", last);
+  };
+
+  const handleDateOfBirthChange = (date: string) => {
+    setDateOfBirth(date);
+    validateAndSetError("dateOfBirth", date);
+  };
+
+  const handleEmailChange = (email: string) => {
+    onEmailChange(email);
+    validateAndSetError("email", email);
+  };
+
+  const handlePhoneChangeWithValidation = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    let formattedValue = value;
+
+    if (!value.startsWith("+91 ")) {
+      formattedValue = "+91 " + value.replace(/^\+91\s*/, "");
+    }
+
+    onPhoneChange(formattedValue);
+    validateAndSetError("phone", formattedValue);
   };
 
   interface DisplayDateInfo {
@@ -93,14 +146,6 @@ const PersonalDetails = ({
       workingHours: "9 am - 6 pm",
     };
   };
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (!value.startsWith("+91 ")) {
-      onPhoneChange("+91 " + value.replace(/^\+91\s*/, ""));
-    } else {
-      onPhoneChange(value);
-    }
-  };
 
   const renderStars = () => {
     return Array.from({ length: 5 }).map((_, i) => (
@@ -123,20 +168,32 @@ const PersonalDetails = ({
                 Your name:
               </Label>
               <div className="grid grid-cols-2 gap-4">
-                <Input
-                  type="text"
-                  placeholder="First"
-                  value={firstName}
-                  onChange={(e) => handleFirstNameChange(e.target.value)}
-                  required
-                />
-                <Input
-                  type="text"
-                  placeholder="Last"
-                  value={lastName}
-                  onChange={(e) => handleLastNameChange(e.target.value)}
-                  required
-                />
+                <div className="space-y-1">
+                  <Input
+                    type="text"
+                    placeholder="First"
+                    value={firstName}
+                    onChange={(e) => handleFirstNameChange(e.target.value)}
+                    className={errors.firstName ? "border-red-500" : ""}
+                    required
+                  />
+                  {errors.firstName && (
+                    <p className="text-sm text-red-500">{errors.firstName}</p>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  <Input
+                    type="text"
+                    placeholder="Last"
+                    value={lastName}
+                    onChange={(e) => handleLastNameChange(e.target.value)}
+                    className={errors.lastName ? "border-red-500" : ""}
+                    required
+                  />
+                  {errors.lastName && (
+                    <p className="text-sm text-red-500">{errors.lastName}</p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -144,9 +201,30 @@ const PersonalDetails = ({
               <Label className="text-base font-medium text-gray-900">
                 Date of birth:
               </Label>
-              <div className="relative">
-                <Input type="date" placeholder="MM/DD/YYYY" className="pr-10" />
-                <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <div className="space-y-1">
+                <div className="relative">
+                  <Input
+                    type="date"
+                    placeholder="MM/DD/YYYY"
+                    className={`pr-10 ${
+                      errors.dateOfBirth ? "border-red-500" : ""
+                    }`}
+                    value={dateOfBirth}
+                    onChange={(e) => handleDateOfBirthChange(e.target.value)}
+                    max={
+                      new Date(
+                        new Date().setFullYear(new Date().getFullYear() - 5)
+                      )
+                        .toISOString()
+                        .split("T")[0]
+                    }
+                    required
+                  />
+                  <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                </div>
+                {errors.dateOfBirth && (
+                  <p className="text-sm text-red-500">{errors.dateOfBirth}</p>
+                )}
               </div>
             </div>
 
@@ -155,24 +233,37 @@ const PersonalDetails = ({
                 <Label className="text-base font-medium text-gray-900">
                   Email address:
                 </Label>
-                <Input
-                  type="email"
-                  placeholder="youremail@"
-                  value={patientEmail}
-                  onChange={(e) => onEmailChange(e.target.value)}
-                />
+                <div className="space-y-1">
+                  <Input
+                    type="email"
+                    placeholder="youremail@"
+                    value={patientEmail}
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                    className={errors.email ? "border-red-500" : ""}
+                    required
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-red-500">{errors.email}</p>
+                  )}
+                </div>
               </div>
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-900">
                   Phone number:
                 </Label>
-                <Input
-                  type="tel"
-                  placeholder="+91 38 (0__) _______"
-                  value={patientPhone}
-                  onChange={handlePhoneChange}
-                  required
-                />
+                <div className="space-y-1">
+                  <Input
+                    type="tel"
+                    placeholder="+91 38 (0__) _______"
+                    value={patientPhone}
+                    onChange={handlePhoneChangeWithValidation}
+                    className={errors.phone ? "border-red-500" : ""}
+                    required
+                  />
+                  {errors.phone && (
+                    <p className="text-sm text-red-500">{errors.phone}</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -253,7 +344,15 @@ const PersonalDetails = ({
         </Button>
         <Button
           onClick={onSubmit}
-          disabled={!firstName || !lastName || !patientPhone || isSubmitting}
+          disabled={
+            !firstName ||
+            !lastName ||
+            !dateOfBirth ||
+            !patientEmail ||
+            !patientPhone ||
+            isSubmitting ||
+            Object.values(errors).some((error) => error)
+          }
           className="px-8 bg-primary hover:bg-primary-dark"
         >
           {isSubmitting ? "Booking..." : "Book Appointment"}
