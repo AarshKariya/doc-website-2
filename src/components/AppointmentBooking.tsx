@@ -53,12 +53,7 @@ const AppointmentBooking = () => {
     loadDoctors();
   }, []);
 
-  useEffect(() => {
-    containerRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }, [currentStep]);
+  // Removed automatic scroll behavior to prevent unwanted navigation on page refresh
 
   useEffect(() => {
     const loadSlots = async () => {
@@ -86,12 +81,32 @@ const AppointmentBooking = () => {
     loadSlots();
   }, [selectedDoctor, selectedDoctorData]);
 
+  const scrollToAppointmentTop = () => {
+    const appointmentSection = document.getElementById("appointment");
+    if (appointmentSection) {
+      const navHeight = 64;
+      const elementPosition = appointmentSection.offsetTop - navHeight;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   const handleNextStep = () => {
     dispatch({ type: "NEXT_STEP" });
+    // Scroll to top of appointment section after step transition
+    setTimeout(() => {
+      scrollToAppointmentTop();
+    }, 100);
   };
 
   const handlePreviousStep = () => {
     dispatch({ type: "PREVIOUS_STEP" });
+    // Scroll to top of appointment section after step transition
+    setTimeout(() => {
+      scrollToAppointmentTop();
+    }, 100);
   };
 
   const handleSubmit = async () => {
@@ -142,9 +157,11 @@ const AppointmentBooking = () => {
         setTimeout(() => {
           const appointmentSection = document.getElementById("appointment");
           if (appointmentSection) {
-            appointmentSection.scrollIntoView({
+            const navHeight = 64;
+            const elementPosition = appointmentSection.offsetTop - navHeight;
+            window.scrollTo({
+              top: elementPosition,
               behavior: "smooth",
-              block: "center",
             });
           }
         }, 100);
