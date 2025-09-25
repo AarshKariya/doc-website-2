@@ -34,7 +34,14 @@ const StepIndicator = ({ currentStep, className }: StepIndicatorProps) => {
   return (
     <div className={cn("w-full max-w-4xl mx-auto mb-8", className)}>
       <div className="flex items-center justify-between relative">
-        <div className="absolute top-6 left-0 right-0 h-0.5 bg-gray-200 -z-10" />
+        <div className="absolute top-6 left-0 right-0 h-0.5 bg-gray-200">
+          <div
+            className="h-full bg-green-500 transition-all duration-300"
+            style={{
+              width: `${((currentStep - 1) / (steps.length - 1)) * 100}%`,
+            }}
+          />
+        </div>
 
         {steps.map((step, index) => {
           const isActive = step.id === currentStep;
@@ -42,7 +49,10 @@ const StepIndicator = ({ currentStep, className }: StepIndicatorProps) => {
           const isUpcoming = step.id > currentStep;
 
           return (
-            <div key={step.id} className="flex flex-col items-center relative">
+            <div
+              key={step.id}
+              className="flex flex-col items-center relative z-10"
+            >
               <div
                 className={cn(
                   "w-12 h-12 rounded-full flex items-center justify-center text-lg font-semibold border-2 bg-white transition-all duration-200",
@@ -76,23 +86,6 @@ const StepIndicator = ({ currentStep, className }: StepIndicatorProps) => {
                   {step.subtitle}
                 </div>
               </div>
-
-              {index < steps.length - 1 && (
-                <div
-                  className={cn(
-                    "absolute top-6 left-full w-full h-0.5 transition-colors duration-200",
-                    {
-                      "bg-green-500": isCompleted,
-                      "bg-orange-500": isActive && index === 0,
-                      "bg-gray-200": isUpcoming || (isActive && index > 0),
-                    }
-                  )}
-                  style={{
-                    width: "calc(100vw / 3 - 3rem)",
-                    transform: "translateX(1.5rem)",
-                  }}
-                />
-              )}
             </div>
           );
         })}
