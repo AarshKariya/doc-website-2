@@ -9,7 +9,11 @@ export const startMockWorker = async () => {
       await worker.start({
         onUnhandledRequest: "bypass",
         quiet: false,
+        serviceWorker: {
+          url: "/mockServiceWorker.js",
+        },
       });
+
       return true;
     } catch (error) {
       return false;

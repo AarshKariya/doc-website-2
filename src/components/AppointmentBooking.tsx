@@ -36,9 +36,12 @@ const AppointmentBooking = () => {
   useEffect(() => {
     const loadDoctors = async () => {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         const response = await realApiClient.getDoctors(
           API_CONFIG_EXPORT.facilityId
         );
+
         setDoctors(response);
       } catch (error) {
         setDoctors([]);
