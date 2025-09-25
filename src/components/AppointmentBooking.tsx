@@ -75,7 +75,6 @@ const AppointmentBooking = () => {
             dispatch({ type: "SET_API_SLOTS", payload: [] });
           }
         } catch (error) {
-          console.error("❌ Failed to load slots:", error);
           dispatch({ type: "SET_API_SLOTS", payload: [] });
         }
       }
@@ -151,7 +150,6 @@ const AppointmentBooking = () => {
           dispatch({ type: "RESET_FORM" });
         }, 8000);
       } catch (error) {
-        console.error("❌ Appointment booking failed:", error);
         alert("Appointment booking failed. Please try again.");
       } finally {
         dispatch({ type: "SET_IS_SUBMITTING", payload: false });
