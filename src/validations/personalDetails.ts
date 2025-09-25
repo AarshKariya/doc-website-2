@@ -1,26 +1,21 @@
 import { z } from "zod";
 
-// Phone number validation - 10 digits only, no special characters
 const phoneRegex = /^[0-9]{10}$/;
 
-// Name validation - only alphabets and spaces, minimum 2 characters
 const nameRegex = /^[a-zA-Z\s]{2,}$/;
 
-// Email validation - standard email format
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Date validation helper functions
 const getEndOfToday = () => {
   const today = new Date();
   today.setHours(23, 59, 59, 999);
   return today;
 };
 
-// Maximum allowed DOB is today minus 5 years (patient must be >= 5 years old)
 const getMaxAllowedDob = () => {
   const date = new Date();
   date.setFullYear(date.getFullYear() - 5);
-  // Compare at end of day to include the boundary date regardless of local time
+
   date.setHours(23, 59, 59, 999);
   return date;
 };
@@ -45,11 +40,11 @@ export const personalDetailsSchema = z.object({
     .min(1, "Date of birth is required")
     .refine((dateString) => {
       const date = new Date(dateString);
-      // Normalize input date to end of day for inclusive comparison
+
       date.setHours(23, 59, 59, 999);
       const maxAllowedDob = getMaxAllowedDob();
       const endOfToday = getEndOfToday();
-      // Disallow future dates, and disallow dates within the last 5 years
+
       return date <= maxAllowedDob && date <= endOfToday;
     }, "Patient must be at least 5 years old and cannot be born in the future"),
 
@@ -63,12 +58,10 @@ export const personalDetailsSchema = z.object({
     .string()
     .min(1, "Phone number is required")
     .refine((phone) => {
-      // Remove +91 prefix if present for validation
       const cleanPhone = phone.replace(/^\+91\s*/, "");
       return phoneRegex.test(cleanPhone);
     }, "Phone number must be exactly 10 digits")
     .refine((phone) => {
-      // Remove +91 prefix if present for validation
       const cleanPhone = phone.replace(/^\+91\s*/, "");
       return cleanPhone.length === 10;
     }, "Phone number must be exactly 10 digits"),
@@ -76,7 +69,6 @@ export const personalDetailsSchema = z.object({
 
 export type PersonalDetailsFormData = z.infer<typeof personalDetailsSchema>;
 
-// Helper function to validate individual fields
 export const validateField = (
   fieldName: keyof PersonalDetailsFormData,
   value: string
@@ -93,7 +85,6 @@ export const validateField = (
   }
 };
 
-// Helper function to validate the entire form
 export const validateForm = (data: Partial<PersonalDetailsFormData>) => {
   try {
     personalDetailsSchema.parse(data);
