@@ -44,8 +44,6 @@ import clinicConsultationOffice from "@/assets/clinic-consultation-office.jpg";
 import clinicWaitingArea from "@/assets/clinic-waiting-area.jpg";
 
 const Index = () => {
-  // Removed console.log to prevent infinite logging
-
   const [currentDoctor, setCurrentDoctor] = useState(0);
   const [currentClinicImage, setCurrentClinicImage] = useState(0);
   const [doctorImageLoaded, setDoctorImageLoaded] = useState<boolean[]>([]);

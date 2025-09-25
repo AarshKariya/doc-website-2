@@ -61,8 +61,6 @@ const AppointmentBooking = () => {
     const loadSlots = async () => {
       if (selectedDoctor) {
         try {
-          console.log("📅 Loading appointment slots from API...");
-
           if (selectedDoctorData && selectedDoctorData.primary_key) {
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
@@ -73,9 +71,7 @@ const AppointmentBooking = () => {
               tomorrowDate
             );
             dispatch({ type: "SET_API_SLOTS", payload: response });
-            console.log("✅ Slots loaded:", response);
           } else {
-            console.log("📅 Using mock slots for fallback doctor");
             dispatch({ type: "SET_API_SLOTS", payload: [] });
           }
         } catch (error) {
@@ -106,7 +102,6 @@ const AppointmentBooking = () => {
     ) {
       dispatch({ type: "SET_IS_SUBMITTING", payload: true });
       try {
-        console.log("🚀 Starting appointment booking process...");
         const patientData = {
           person_id: `person_${Date.now()}`,
           patient_dob: "1990-01-01",
@@ -139,7 +134,6 @@ const AppointmentBooking = () => {
         const appointmentResponse = await realApiClient.bookAppointment(
           appointmentData
         );
-        console.log("✅ Appointment booked:", appointmentResponse);
 
         dispatch({ type: "SUBMIT_SUCCESS" });
 
