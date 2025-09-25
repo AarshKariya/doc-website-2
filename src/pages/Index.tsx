@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { 
-  Calendar, 
-  Clock, 
-  Users, 
-  Award, 
-  Heart, 
+import { useEffect, useState } from "react";
+import {
+  Calendar,
+  Clock,
+  Users,
+  Award,
+  Heart,
   Stethoscope,
   Shield,
   Smile,
@@ -16,45 +16,45 @@ import {
   Phone,
   Mail,
   ChevronLeft,
-  ChevronRight
-} from 'lucide-react';
+  ChevronRight,
+} from "lucide-react";
 
-import Navigation from '@/components/Navigation';
-import AppointmentBooking from '@/components/AppointmentBooking';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import Navigation from "@/components/Navigation";
+import AppointmentBooking from "@/components/AppointmentBooking";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 // Import images
-import drAnuragAggarwal from '@/assets/dr-anurag-aggarwal.jpg';
-import drKavyaReddy from '@/assets/dr-kavya-reddy.jpg';
-import drVikramSingh from '@/assets/dr-vikram-singh-new.jpg';
-import servicePreventive from '@/assets/service-preventive.jpg';
-import serviceRestorative from '@/assets/service-restorative.jpg';
-import serviceCosmetic from '@/assets/service-cosmetic.jpg';
-import serviceOrthodontics from '@/assets/service-orthodontics.jpg';
-import servicePeriodontal from '@/assets/service-periodontal.jpg';
-import serviceOralSurgery from '@/assets/service-oral-surgery.jpg';
-import patient1 from '@/assets/patient-1.jpg';
-import patient2 from '@/assets/patient-2.jpg';
-import patient3 from '@/assets/patient-3.jpg';
-import clinicEntrance from '@/assets/generic-clinic-entrance.jpg';
-import clinicReception from '@/assets/clinic-reception.jpg';
-import clinicTreatmentRoom from '@/assets/clinic-treatment-room.jpg';
-import clinicConsultationOffice from '@/assets/clinic-consultation-office.jpg';
-import clinicWaitingArea from '@/assets/clinic-waiting-area.jpg';
+import drAnuragAggarwal from "@/assets/dr-anurag-aggarwal.jpg";
+import drKavyaReddy from "@/assets/dr-kavya-reddy.jpg";
+import drVikramSingh from "@/assets/dr-vikram-singh-new.jpg";
+import servicePreventive from "@/assets/service-preventive.jpg";
+import serviceRestorative from "@/assets/service-restorative.jpg";
+import serviceCosmetic from "@/assets/service-cosmetic.jpg";
+import serviceOrthodontics from "@/assets/service-orthodontics.jpg";
+import servicePeriodontal from "@/assets/service-periodontal.jpg";
+import serviceOralSurgery from "@/assets/service-oral-surgery.jpg";
+import patient1 from "@/assets/patient-1.jpg";
+import patient2 from "@/assets/patient-2.jpg";
+import patient3 from "@/assets/patient-3.jpg";
+import clinicEntrance from "@/assets/generic-clinic-entrance.jpg";
+import clinicReception from "@/assets/clinic-reception.jpg";
+import clinicTreatmentRoom from "@/assets/clinic-treatment-room.jpg";
+import clinicConsultationOffice from "@/assets/clinic-consultation-office.jpg";
+import clinicWaitingArea from "@/assets/clinic-waiting-area.jpg";
 
 const Index = () => {
-  console.log('Index component is rendering');
-  
+  // Removed console.log to prevent infinite logging
+
   const [currentDoctor, setCurrentDoctor] = useState(0);
   const [currentClinicImage, setCurrentClinicImage] = useState(0);
   const [doctorImageLoaded, setDoctorImageLoaded] = useState<boolean[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  
+
   // Touch/swipe handling for clinic carousel
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
-  
+
   // Touch/swipe handling for doctors section
   const [doctorTouchStart, setDoctorTouchStart] = useState(0);
   const [doctorTouchEnd, setDoctorTouchEnd] = useState(0);
@@ -62,132 +62,175 @@ const Index = () => {
   const doctors = [
     {
       id: 1,
-      name: 'Dr. Anurag Aggarwal',
-      specialization: 'Chief Dentist & Oral Surgeon',
-      experience: '20+ Years',
+      name: "Dr. Anurag Aggarwal",
+      specialization: "Chief Dentist & Oral Surgeon",
+      experience: "20+ Years",
       image: drAnuragAggarwal,
-      quote: 'Every smile deserves the finest care. My approach combines cutting-edge technology with compassionate treatment to ensure every patient leaves with confidence.',
-      description: 'Dr. Anurag Aggarwal is the founder and chief dentist with over two decades of experience in comprehensive dental care. He specializes in oral surgery, dental implants, and complex restorative procedures.'
+      quote:
+        "Every smile deserves the finest care. My approach combines cutting-edge technology with compassionate treatment to ensure every patient leaves with confidence.",
+      description:
+        "Dr. Anurag Aggarwal is the founder and chief dentist with over two decades of experience in comprehensive dental care. He specializes in oral surgery, dental implants, and complex restorative procedures.",
     },
     {
       id: 2,
-      name: 'Dr. Kavya Reddy',
-      specialization: 'Cosmetic Dentistry & Orthodontics',
-      experience: '15+ Years',
+      name: "Dr. Kavya Reddy",
+      specialization: "Cosmetic Dentistry & Orthodontics",
+      experience: "15+ Years",
       image: drKavyaReddy,
-      quote: 'A beautiful smile is not just about aesthetics—it\'s about boosting your confidence and improving your quality of life through expert cosmetic and orthodontic care.',
-      description: 'Dr. Kavya Reddy specializes in cosmetic dentistry and orthodontics, helping patients achieve their dream smiles through advanced techniques like invisible braces and porcelain veneers.'
+      quote:
+        "A beautiful smile is not just about aesthetics—it's about boosting your confidence and improving your quality of life through expert cosmetic and orthodontic care.",
+      description:
+        "Dr. Kavya Reddy specializes in cosmetic dentistry and orthodontics, helping patients achieve their dream smiles through advanced techniques like invisible braces and porcelain veneers.",
     },
     {
       id: 3,
-      name: 'Dr. Vikram Singh',
-      specialization: 'Periodontics & Preventive Care',
-      experience: '18+ Years',
+      name: "Dr. Vikram Singh",
+      specialization: "Periodontics & Preventive Care",
+      experience: "18+ Years",
       image: drVikramSingh,
-      quote: 'Prevention is the best medicine. My focus is on maintaining optimal oral health through preventive care and treating gum diseases with the latest periodontal techniques.',
-      description: 'Dr. Vikram Singh is our periodontics specialist, focusing on gum health and preventive care. He has extensive experience in treating gum diseases and maintaining oral hygiene.'
-    }
+      quote:
+        "Prevention is the best medicine. My focus is on maintaining optimal oral health through preventive care and treating gum diseases with the latest periodontal techniques.",
+      description:
+        "Dr. Vikram Singh is our periodontics specialist, focusing on gum health and preventive care. He has extensive experience in treating gum diseases and maintaining oral hygiene.",
+    },
   ];
 
   const services = [
     {
-      title: 'Preventive Care',
-      description: 'Regular cleanings, examinations, and preventive treatments to maintain optimal oral health.',
+      title: "Preventive Care",
+      description:
+        "Regular cleanings, examinations, and preventive treatments to maintain optimal oral health.",
       image: servicePreventive,
-      features: ['Professional Cleaning', 'Oral Examinations', 'Fluoride Treatments', 'Sealants']
+      features: [
+        "Professional Cleaning",
+        "Oral Examinations",
+        "Fluoride Treatments",
+        "Sealants",
+      ],
     },
     {
-      title: 'Restorative Procedures',
-      description: 'Expert restoration services including fillings, crowns, bridges, and root canal treatments.',
+      title: "Restorative Procedures",
+      description:
+        "Expert restoration services including fillings, crowns, bridges, and root canal treatments.",
       image: serviceRestorative,
-      features: ['Dental Fillings', 'Crowns & Bridges', 'Root Canal Treatment', 'Dental Implants']
+      features: [
+        "Dental Fillings",
+        "Crowns & Bridges",
+        "Root Canal Treatment",
+        "Dental Implants",
+      ],
     },
     {
-      title: 'Cosmetic Treatments',
-      description: 'Transform your smile with professional teeth whitening, veneers, and cosmetic procedures.',
+      title: "Cosmetic Treatments",
+      description:
+        "Transform your smile with professional teeth whitening, veneers, and cosmetic procedures.",
       image: serviceCosmetic,
-      features: ['Teeth Whitening', 'Porcelain Veneers', 'Smile Makeover', 'Bonding']
+      features: [
+        "Teeth Whitening",
+        "Porcelain Veneers",
+        "Smile Makeover",
+        "Bonding",
+      ],
     },
     {
-      title: 'Orthodontics',
-      description: 'Straighten your teeth with traditional braces, clear aligners, and modern orthodontic solutions.',
+      title: "Orthodontics",
+      description:
+        "Straighten your teeth with traditional braces, clear aligners, and modern orthodontic solutions.",
       image: serviceOrthodontics,
-      features: ['Traditional Braces', 'Clear Aligners', 'Retainers', 'Orthodontic Consultations']
+      features: [
+        "Traditional Braces",
+        "Clear Aligners",
+        "Retainers",
+        "Orthodontic Consultations",
+      ],
     },
     {
-      title: 'Periodontal Care',
-      description: 'Specialized treatment for gum diseases and maintaining healthy gums and supporting structures.',
+      title: "Periodontal Care",
+      description:
+        "Specialized treatment for gum diseases and maintaining healthy gums and supporting structures.",
       image: servicePeriodontal,
-      features: ['Gum Disease Treatment', 'Deep Cleaning', 'Gum Surgery', 'Maintenance Therapy']
+      features: [
+        "Gum Disease Treatment",
+        "Deep Cleaning",
+        "Gum Surgery",
+        "Maintenance Therapy",
+      ],
     },
     {
-      title: 'Oral Surgery',
-      description: 'Advanced surgical procedures including extractions, wisdom tooth removal, and jaw surgery.',
+      title: "Oral Surgery",
+      description:
+        "Advanced surgical procedures including extractions, wisdom tooth removal, and jaw surgery.",
       image: serviceOralSurgery,
-      features: ['Tooth Extractions', 'Wisdom Tooth Removal', 'Jaw Surgery', 'Dental Implant Surgery']
-    }
+      features: [
+        "Tooth Extractions",
+        "Wisdom Tooth Removal",
+        "Jaw Surgery",
+        "Dental Implant Surgery",
+      ],
+    },
   ];
 
   const clinicImages = [
     {
-      title: 'Entrance',
-      description: 'Modern and welcoming entrance',
-      image: clinicEntrance
+      title: "Entrance",
+      description: "Modern and welcoming entrance",
+      image: clinicEntrance,
     },
     {
-      title: 'Reception Area',
-      description: 'Professional front desk and comfortable waiting space',
-      image: clinicReception
+      title: "Reception Area",
+      description: "Professional front desk and comfortable waiting space",
+      image: clinicReception,
     },
     {
-      title: 'Treatment Room',
-      description: 'State-of-the-art dental equipment and comfortable patient care',
-      image: clinicTreatmentRoom
+      title: "Treatment Room",
+      description:
+        "State-of-the-art dental equipment and comfortable patient care",
+      image: clinicTreatmentRoom,
     },
     {
-      title: 'Consultation Office',
-      description: 'Private consultation space for treatment discussions',
-      image: clinicConsultationOffice
+      title: "Consultation Office",
+      description: "Private consultation space for treatment discussions",
+      image: clinicConsultationOffice,
     },
     {
-      title: 'Waiting Area',
-      description: 'Comfortable seating area for patients and families',
-      image: clinicWaitingArea
-    }
+      title: "Waiting Area",
+      description: "Comfortable seating area for patients and families",
+      image: clinicWaitingArea,
+    },
   ];
 
   const testimonials = [
     {
-      name: 'Fatima Khan',
+      name: "Fatima Khan",
       age: 45,
       image: patient1,
-      profession: 'Teacher',
+      profession: "Teacher",
       rating: 5,
-      text: 'Dr. Anurag and his team provided exceptional care during my root canal treatment. The entire process was pain-free and the staff made me feel comfortable throughout. Highly recommend!'
+      text: "Dr. Anurag and his team provided exceptional care during my root canal treatment. The entire process was pain-free and the staff made me feel comfortable throughout. Highly recommend!",
     },
     {
-      name: 'Arjun Mehta',
+      name: "Arjun Mehta",
       age: 32,
       image: patient2,
-      profession: 'Software Engineer',
+      profession: "Software Engineer",
       rating: 5,
-      text: 'The teeth whitening treatment exceeded my expectations! Dr. Kavya explained every step and the results were amazing. My confidence has improved significantly.'
+      text: "The teeth whitening treatment exceeded my expectations! Dr. Kavya explained every step and the results were amazing. My confidence has improved significantly.",
     },
     {
-      name: 'Ramesh Gupta',
+      name: "Ramesh Gupta",
       age: 68,
       image: patient3,
-      profession: 'Retired Government Officer',
+      profession: "Retired Government Officer",
       rating: 5,
-      text: 'After losing several teeth, I thought I\'d never smile confidently again. The dental implants Dr. Anurag provided have given me back my smile and ability to eat properly. Excellent work!'
-    }
+      text: "After losing several teeth, I thought I'd never smile confidently again. The dental implants Dr. Anurag provided have given me back my smile and ability to eat properly. Excellent work!",
+    },
   ];
 
   const stats = [
-    { icon: Award, value: '20+', label: 'Years of Experience' },
-    { icon: Users, value: '10,000+', label: 'Patients Treated' },
-    { icon: Heart, value: '100+', label: 'Dental Camps Conducted' },
-    { icon: Star, value: '4.9/5', label: 'Patient Rating' }
+    { icon: Award, value: "20+", label: "Years of Experience" },
+    { icon: Users, value: "10,000+", label: "Patients Treated" },
+    { icon: Heart, value: "100+", label: "Dental Camps Conducted" },
+    { icon: Star, value: "4.9/5", label: "Patient Rating" },
   ];
 
   // Preload all doctor images on component mount
@@ -196,7 +239,7 @@ const Index = () => {
       return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => {
-          setDoctorImageLoaded(prev => {
+          setDoctorImageLoaded((prev) => {
             const newState = [...prev];
             newState[index] = true;
             return newState;
@@ -209,23 +252,23 @@ const Index = () => {
     });
 
     Promise.all(imageLoadPromises);
-  }, [doctors]);
+  }, []); // Empty dependency - doctors array is static
 
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
+      rootMargin: "0px 0px -50px 0px",
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
+          entry.target.classList.add("revealed");
         }
       });
     }, observerOptions);
 
-    const elements = document.querySelectorAll('.scroll-reveal');
+    const elements = document.querySelectorAll(".scroll-reveal");
     elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
@@ -236,7 +279,9 @@ const Index = () => {
   };
 
   const prevClinicImage = () => {
-    setCurrentClinicImage((prev) => (prev - 1 + clinicImages.length) % clinicImages.length);
+    setCurrentClinicImage(
+      (prev) => (prev - 1 + clinicImages.length) % clinicImages.length
+    );
   };
 
   // Swipe handling functions
@@ -251,7 +296,7 @@ const Index = () => {
 
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
-    
+
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
@@ -263,7 +308,6 @@ const Index = () => {
     }
   };
 
-  
   // Doctor swipe handling functions
   const handleDoctorTouchStart = (e: React.TouchEvent) => {
     setDoctorTouchEnd(0); // Reset touchEnd
@@ -276,7 +320,7 @@ const Index = () => {
 
   const handleDoctorTouchEnd = () => {
     if (!doctorTouchStart || !doctorTouchEnd) return;
-    
+
     const distance = doctorTouchStart - doctorTouchEnd;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
@@ -307,12 +351,15 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
-      
+
       {/* Hero Section */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section
+        id="home"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      >
         <div className="absolute inset-0 hero-gradient"></div>
         <div className="absolute inset-0 bg-black/20"></div>
-        
+
         <div className="relative z-10 container mx-auto px-4 py-8 lg:py-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-6 animate-fade-in">
@@ -321,15 +368,16 @@ const Index = () => {
                 <span className="text-accent">Our Priority</span>
               </h1>
               <p className="text-xl lg:text-2xl text-white/90 max-w-lg">
-                Established in 2003, Dr. Anurag's Dental Clinic has been serving the community with 
-                exceptional dental care, combining traditional values with modern technology.
+                Established in 2003, Dr. Anurag's Dental Clinic has been serving
+                the community with exceptional dental care, combining
+                traditional values with modern technology.
               </p>
             </div>
-            
+
             <div className="relative animate-slide-up">
               <div className="relative">
-                <img 
-                  src={drAnuragAggarwal} 
+                <img
+                  src={drAnuragAggarwal}
                   alt="Dr. Anurag Aggarwal - Chief Dentist"
                   className="w-full max-w-md mx-auto rounded-2xl shadow-medical hover-lift"
                   loading="eager"
@@ -349,7 +397,9 @@ const Index = () => {
               <span className="font-semibold">Clinic Hours:</span>
             </div>
             <div className="text-sm md:text-base">
-              <span className="font-medium">Monday - Saturday: 9:00 AM - 6:00 PM</span>
+              <span className="font-medium">
+                Monday - Saturday: 9:00 AM - 6:00 PM
+              </span>
               <span className="ml-4 text-accent">Sunday: Closed</span>
             </div>
             <div className="flex items-center space-x-2 mt-2 md:mt-0">
@@ -368,10 +418,11 @@ const Index = () => {
               Book Your Appointment
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Schedule your visit with our expert dentists. Choose your preferred doctor, date, and time.
+              Schedule your visit with our expert dentists. Choose your
+              preferred doctor, date, and time.
             </p>
           </div>
-          
+
           <div className="scroll-reveal">
             <AppointmentBooking />
           </div>
@@ -386,12 +437,13 @@ const Index = () => {
               Meet Your Dentists
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Our experienced team of dental professionals is committed to providing you with the highest quality care.
+              Our experienced team of dental professionals is committed to
+              providing you with the highest quality care.
             </p>
           </div>
 
           <div className="relative max-w-4xl mx-auto scroll-reveal">
-            <div 
+            <div
               className="bg-gradient-to-br from-background to-muted rounded-3xl p-8 lg:p-12 shadow-medical touch-pan-y"
               onTouchStart={handleDoctorTouchStart}
               onTouchMove={handleDoctorTouchMove}
@@ -411,17 +463,17 @@ const Index = () => {
                         {doctors[currentDoctor].experience}
                       </p>
                     </div>
-                    
+
                     <blockquote className="text-lg italic text-muted-foreground border-l-4 border-primary pl-6">
                       "{doctors[currentDoctor].quote}"
                     </blockquote>
-                    
+
                     <p className="text-muted-foreground leading-relaxed">
                       {doctors[currentDoctor].description}
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="order-1 lg:order-2 relative">
                   <div className="relative w-full max-w-sm mx-auto h-80 rounded-2xl overflow-hidden shadow-soft">
                     {/* Hidden preloader images */}
@@ -435,13 +487,15 @@ const Index = () => {
                         decoding="async"
                       />
                     ))}
-                    
+
                     {/* Visible doctor image */}
-                    <img 
+                    <img
                       src={doctors[currentDoctor].image}
                       alt={doctors[currentDoctor].name}
                       className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 hover-lift ${
-                        isTransitioning ? 'opacity-70 scale-95' : 'opacity-100 scale-100'
+                        isTransitioning
+                          ? "opacity-70 scale-95"
+                          : "opacity-100 scale-100"
                       }`}
                       loading="eager"
                       decoding="async"
@@ -449,30 +503,30 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Navigation Controls at Bottom */}
               <div className="flex items-center justify-center mt-8 space-x-4">
-                <button 
+                <button
                   onClick={prevDoctor}
                   className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
                   aria-label="Previous doctor"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-                
+
                 <div className="flex space-x-2">
                   {doctors.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentDoctor(index)}
                       className={`w-3 h-3 rounded-full transition-colors ${
-                        currentDoctor === index ? 'bg-primary' : 'bg-border'
+                        currentDoctor === index ? "bg-primary" : "bg-border"
                       }`}
                     />
                   ))}
                 </div>
-                
-                <button 
+
+                <button
                   onClick={nextDoctor}
                   className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
                   aria-label="Next doctor"
@@ -494,7 +548,9 @@ const Index = () => {
                 <div className="flex items-center justify-center mb-4">
                   <stat.icon className="w-12 h-12 text-accent" />
                 </div>
-                <div className="text-3xl lg:text-4xl font-bold mb-2">{stat.value}</div>
+                <div className="text-3xl lg:text-4xl font-bold mb-2">
+                  {stat.value}
+                </div>
                 <div className="text-white/80">{stat.label}</div>
               </div>
             ))}
@@ -510,31 +566,32 @@ const Index = () => {
               Our Dental Services
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive dental care services designed to meet all your oral health needs.
+              Comprehensive dental care services designed to meet all your oral
+              health needs.
             </p>
           </div>
 
           {/* Services Carousel */}
           <div className="relative">
-            <div 
+            <div
               id="services-scroll"
-              className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide px-4" 
-              style={{ 
-                scrollbarWidth: 'none', 
-                msOverflowStyle: 'none',
-                scrollBehavior: 'smooth',
-                WebkitOverflowScrolling: 'touch'
+              className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide px-4"
+              style={{
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                scrollBehavior: "smooth",
+                WebkitOverflowScrolling: "touch",
               }}
             >
               <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; }`}</style>
               {services.map((service, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="flex-none w-[280px] md:w-[320px] snap-center"
                 >
                   <Card className="hover-lift scroll-reveal shadow-soft h-full transition-transform duration-300 hover:scale-105">
                     <div className="relative overflow-hidden rounded-t-lg">
-                      <img 
+                      <img
                         src={service.image}
                         alt={service.title}
                         className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
@@ -543,11 +600,18 @@ const Index = () => {
                       />
                     </div>
                     <CardContent className="p-6">
-                      <h3 className="text-xl font-bold text-primary mb-3">{service.title}</h3>
-                      <p className="text-muted-foreground mb-4">{service.description}</p>
+                      <h3 className="text-xl font-bold text-primary mb-3">
+                        {service.title}
+                      </h3>
+                      <p className="text-muted-foreground mb-4">
+                        {service.description}
+                      </p>
                       <ul className="space-y-2">
                         {service.features.map((feature, featureIndex) => (
-                          <li key={featureIndex} className="flex items-center text-sm">
+                          <li
+                            key={featureIndex}
+                            className="flex items-center text-sm"
+                          >
                             <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
                             {feature}
                           </li>
@@ -563,9 +627,9 @@ const Index = () => {
             <div className="flex justify-center items-center mt-8 space-x-6">
               <button
                 onClick={() => {
-                  const container = document.getElementById('services-scroll');
+                  const container = document.getElementById("services-scroll");
                   if (container) {
-                    container.scrollBy({ left: -150, behavior: 'smooth' });
+                    container.scrollBy({ left: -150, behavior: "smooth" });
                   }
                 }}
                 className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
@@ -573,12 +637,11 @@ const Index = () => {
                 <ChevronLeft className="w-5 h-5" />
               </button>
 
-
               <button
                 onClick={() => {
-                  const container = document.getElementById('services-scroll');
+                  const container = document.getElementById("services-scroll");
                   if (container) {
-                    container.scrollBy({ left: 150, behavior: 'smooth' });
+                    container.scrollBy({ left: 150, behavior: "smooth" });
                   }
                 }}
                 className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-dark transition-all duration-200 flex items-center justify-center hover:scale-110"
@@ -598,19 +661,19 @@ const Index = () => {
               Our Clinic in Pics
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Take a virtual tour of our facility designed for your comfort and care.
+              Take a virtual tour of our facility designed for your comfort and
+              care.
             </p>
           </div>
 
           {/* Enhanced Carousel */}
           <div className="relative max-w-4xl mx-auto">
-            <div 
+            <div
               className="relative h-80 md:h-96 overflow-hidden rounded-2xl shadow-2xl bg-gradient-to-br from-primary/5 to-accent/5 touch-pan-y"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              
               {/* Main Image Display */}
               <div className="relative w-full h-full select-none">
                 <img
@@ -628,9 +691,9 @@ const Index = () => {
                   <div
                     key={index}
                     className={`w-12 h-8 rounded border-2 cursor-pointer transition-all duration-300 ${
-                      index === currentClinicImage 
-                        ? 'border-white shadow-lg' 
-                        : 'border-white/50 hover:border-white/80'
+                      index === currentClinicImage
+                        ? "border-white shadow-lg"
+                        : "border-white/50 hover:border-white/80"
                     }`}
                     onClick={() => setCurrentClinicImage(index)}
                   >
@@ -650,7 +713,7 @@ const Index = () => {
               >
                 <ChevronLeft className="w-7 h-7 group-hover:scale-110 transition-transform" />
               </button>
-              
+
               <button
                 onClick={nextClinicImage}
                 className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm text-white shadow-lg hover:bg-white/30 transition-all duration-300 flex items-center justify-center group"
@@ -666,8 +729,8 @@ const Index = () => {
                   key={index}
                   className={`h-1 rounded-full transition-all duration-300 cursor-pointer ${
                     index === currentClinicImage
-                      ? 'w-8 bg-primary'
-                      : 'w-4 bg-primary/30 hover:bg-primary/50'
+                      ? "w-8 bg-primary"
+                      : "w-4 bg-primary/30 hover:bg-primary/50"
                   }`}
                   onClick={() => setCurrentClinicImage(index)}
                 />
@@ -685,18 +748,25 @@ const Index = () => {
               What Our Patients Say
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Read testimonials from our satisfied patients who have experienced our quality dental care.
+              Read testimonials from our satisfied patients who have experienced
+              our quality dental care.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="shadow-soft hover-lift scroll-reveal">
+              <Card
+                key={index}
+                className="shadow-soft hover-lift scroll-reveal"
+              >
                 <CardContent className="p-6">
                   <div className="mb-4">
                     <div className="flex mb-2">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-current text-yellow-400" />
+                        <Star
+                          key={i}
+                          className="w-4 h-4 fill-current text-yellow-400"
+                        />
                       ))}
                     </div>
                     <blockquote className="text-muted-foreground italic leading-relaxed mb-4">
@@ -719,7 +789,10 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-secondary text-secondary-foreground py-12">
+      <footer
+        id="contact"
+        className="bg-secondary text-secondary-foreground py-12"
+      >
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Clinic Info */}
@@ -729,24 +802,36 @@ const Index = () => {
                   <span className="text-white font-bold text-xl">DA</span>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-primary">Dr. Anurag's</h3>
+                  <h3 className="text-2xl font-bold text-primary">
+                    Dr. Anurag's
+                  </h3>
                   <p className="text-sm text-muted-foreground">Dental Clinic</p>
                 </div>
               </div>
               <p className="text-muted-foreground mb-6">
-                Committed to providing exceptional dental care with compassion, expertise, and cutting-edge technology. 
-                Your smile is our priority, and your comfort is our commitment.
+                Committed to providing exceptional dental care with compassion,
+                expertise, and cutting-edge technology. Your smile is our
+                priority, and your comfort is our commitment.
               </p>
               <div className="flex space-x-4">
-                <a href="https://facebook.com" className="text-muted-foreground hover:text-primary transition-colors">
+                <a
+                  href="https://facebook.com"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   <Facebook className="w-6 h-6" />
                   <span className="sr-only">Facebook</span>
                 </a>
-                <a href="https://twitter.com" className="text-muted-foreground hover:text-primary transition-colors">
+                <a
+                  href="https://twitter.com"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   <Twitter className="w-6 h-6" />
                   <span className="sr-only">Twitter</span>
                 </a>
-                <a href="https://instagram.com" className="text-muted-foreground hover:text-primary transition-colors">
+                <a
+                  href="https://instagram.com"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   <Instagram className="w-6 h-6" />
                   <span className="sr-only">Instagram</span>
                 </a>
@@ -755,16 +840,21 @@ const Index = () => {
 
             {/* Quick Links */}
             <div className="scroll-reveal">
-              <h4 className="text-xl font-bold text-primary mb-6">Quick Links</h4>
+              <h4 className="text-xl font-bold text-primary mb-6">
+                Quick Links
+              </h4>
               <ul className="space-y-3">
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
-                      const element = document.getElementById('home');
+                      const element = document.getElementById("home");
                       if (element) {
                         const navHeight = 64;
                         const elementPosition = element.offsetTop - navHeight;
-                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                        window.scrollTo({
+                          top: elementPosition,
+                          behavior: "smooth",
+                        });
                       }
                     }}
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -773,13 +863,16 @@ const Index = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
-                      const element = document.getElementById('appointment');
+                      const element = document.getElementById("appointment");
                       if (element) {
                         const navHeight = 64;
                         const elementPosition = element.offsetTop - navHeight;
-                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                        window.scrollTo({
+                          top: elementPosition,
+                          behavior: "smooth",
+                        });
                       }
                     }}
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -788,13 +881,16 @@ const Index = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
-                      const element = document.getElementById('doctors');
+                      const element = document.getElementById("doctors");
                       if (element) {
                         const navHeight = 64;
                         const elementPosition = element.offsetTop - navHeight;
-                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                        window.scrollTo({
+                          top: elementPosition,
+                          behavior: "smooth",
+                        });
                       }
                     }}
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -803,13 +899,16 @@ const Index = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
-                      const element = document.getElementById('services');
+                      const element = document.getElementById("services");
                       if (element) {
                         const navHeight = 64;
                         const elementPosition = element.offsetTop - navHeight;
-                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                        window.scrollTo({
+                          top: elementPosition,
+                          behavior: "smooth",
+                        });
                       }
                     }}
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -818,13 +917,16 @@ const Index = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
-                      const element = document.getElementById('clinic');
+                      const element = document.getElementById("clinic");
                       if (element) {
                         const navHeight = 64;
                         const elementPosition = element.offsetTop - navHeight;
-                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                        window.scrollTo({
+                          top: elementPosition,
+                          behavior: "smooth",
+                        });
                       }
                     }}
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -833,13 +935,16 @@ const Index = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
-                      const element = document.getElementById('testimonials');
+                      const element = document.getElementById("testimonials");
                       if (element) {
                         const navHeight = 64;
                         const elementPosition = element.offsetTop - navHeight;
-                        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+                        window.scrollTo({
+                          top: elementPosition,
+                          behavior: "smooth",
+                        });
                       }
                     }}
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -852,15 +957,19 @@ const Index = () => {
 
             {/* Contact Info */}
             <div className="scroll-reveal">
-              <h4 className="text-xl font-bold text-primary mb-6">Contact Information</h4>
+              <h4 className="text-xl font-bold text-primary mb-6">
+                Contact Information
+              </h4>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <MapPin className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <p className="font-medium">Address</p>
                     <p className="text-muted-foreground text-sm">
-                      123 Medical Complex, MG Road<br />
-                      Mumbai, Maharashtra 400001<br />
+                      123 Medical Complex, MG Road
+                      <br />
+                      Mumbai, Maharashtra 400001
+                      <br />
                       India
                     </p>
                   </div>
@@ -869,21 +978,27 @@ const Index = () => {
                   <Phone className="w-5 h-5 text-primary" />
                   <div>
                     <p className="font-medium">Phone</p>
-                    <p className="text-muted-foreground text-sm">+91-9876543210</p>
+                    <p className="text-muted-foreground text-sm">
+                      +91-9876543210
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Mail className="w-5 h-5 text-primary" />
                   <div>
                     <p className="font-medium">Email</p>
-                    <p className="text-muted-foreground text-sm">info@dranuragsdentalclinic.com</p>
+                    <p className="text-muted-foreground text-sm">
+                      info@dranuragsdentalclinic.com
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Clock className="w-5 h-5 text-primary" />
                   <div>
                     <p className="font-medium">Hours</p>
-                    <p className="text-muted-foreground text-sm">Mon-Sat: 9AM-6PM</p>
+                    <p className="text-muted-foreground text-sm">
+                      Mon-Sat: 9AM-6PM
+                    </p>
                   </div>
                 </div>
               </div>
@@ -892,8 +1007,10 @@ const Index = () => {
 
           <div className="border-t border-border mt-12 pt-8 text-center">
             <p className="text-muted-foreground text-sm">
-              © 2024 Dr. Anurag's Dental Clinic. All rights reserved. | 
-              <span className="ml-2">Designed with care for your dental health.</span>
+              © 2024 Dr. Anurag's Dental Clinic. All rights reserved. |
+              <span className="ml-2">
+                Designed with care for your dental health.
+              </span>
             </p>
           </div>
         </div>
