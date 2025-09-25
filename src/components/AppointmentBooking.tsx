@@ -1,17 +1,19 @@
-import { useEffect, useMemo, useReducer, useRef } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { CheckCircle } from "lucide-react";
 import { realApiClient, API_CONFIG_EXPORT } from "@/lib/api-client-real";
 import { appointmentReducer, initialState } from "@/state/appointment";
-import { DOCTORS as STATIC_DOCTORS, UIDoctor } from "@/data/doctors";
+import { Doctor } from "@/types/api";
 import { Card, CardContent } from "@/components/ui/card";
 import StepIndicator from "@/components/StepIndicator";
-import Step1DoctorSelection from "@/components/Step1DoctorSelection";
-import Step2DateTimeSelection from "@/components/Step2DateTimeSelection";
-import Step3PersonalDetails from "@/components/Step3PersonalDetails";
+import DoctorSelectionStep from "@/components/DoctorSelectionStep";
+import DateTimeSelection from "@/components/DateTimeSelection";
+import PersonalDetails from "@/components/PersonalDetails";
 
 const AppointmentBooking = () => {
   const [state, dispatch] = useReducer(appointmentReducer, initialState);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [isLoadingDoctors, setIsLoadingDoctors] = useState(true);
 
   const {
     form: {
@@ -26,53 +28,85 @@ const AppointmentBooking = () => {
     api: { slots: apiSlots },
   } = state;
 
-  const doctors: UIDoctor[] = useMemo(() => STATIC_DOCTORS, []);
   const selectedDoctorData = useMemo(
     () => doctors.find((d) => d.employee_id === selectedDoctor) || null,
     [doctors, selectedDoctor]
   );
 
-  // Auto scroll top on step change
   useEffect(() => {
-    containerRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }, [currentStep]);
+    const loadDoctors = async () => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        const response = await realApiClient.getDoctors(
+          API_CONFIG_EXPORT.facilityId
+        );
+
+        setDoctors(response);
+      } catch (error) {
+        setDoctors([]);
+      } finally {
+        setIsLoadingDoctors(false);
+      }
+    };
+
+    loadDoctors();
+  }, []);
+
+  // Removed automatic scroll behavior to prevent unwanted navigation on page refresh
 
   useEffect(() => {
     const loadSlots = async () => {
-      if (selectedDoctor && selectedDate) {
+      if (selectedDoctor) {
         try {
-          console.log("📅 Loading appointment slots from API...");
-
           if (selectedDoctorData && selectedDoctorData.primary_key) {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowDate = tomorrow.toISOString().split("T")[0];
+
             const response = await realApiClient.getAppointmentSlots(
               selectedDoctorData.primary_key,
-              selectedDate
+              tomorrowDate
             );
             dispatch({ type: "SET_API_SLOTS", payload: response });
-            console.log("✅ Slots loaded:", response);
           } else {
-            console.log("📅 Using mock slots for fallback doctor");
             dispatch({ type: "SET_API_SLOTS", payload: [] });
           }
         } catch (error) {
-          console.error("❌ Failed to load slots:", error);
           dispatch({ type: "SET_API_SLOTS", payload: [] });
         }
       }
     };
 
     loadSlots();
-  }, [selectedDoctor, selectedDate, selectedDoctorData]);
+  }, [selectedDoctor, selectedDoctorData]);
+
+  const scrollToAppointmentTop = () => {
+    const appointmentSection = document.getElementById("appointment");
+    if (appointmentSection) {
+      const navHeight = 64;
+      const elementPosition = appointmentSection.offsetTop - navHeight;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const handleNextStep = () => {
     dispatch({ type: "NEXT_STEP" });
+    // Scroll to top of appointment section after step transition
+    setTimeout(() => {
+      scrollToAppointmentTop();
+    }, 100);
   };
 
   const handlePreviousStep = () => {
     dispatch({ type: "PREVIOUS_STEP" });
+    // Scroll to top of appointment section after step transition
+    setTimeout(() => {
+      scrollToAppointmentTop();
+    }, 100);
   };
 
   const handleSubmit = async () => {
@@ -85,7 +119,6 @@ const AppointmentBooking = () => {
     ) {
       dispatch({ type: "SET_IS_SUBMITTING", payload: true });
       try {
-        console.log("🚀 Starting appointment booking process...");
         const patientData = {
           person_id: `person_${Date.now()}`,
           patient_dob: "1990-01-01",
@@ -118,16 +151,17 @@ const AppointmentBooking = () => {
         const appointmentResponse = await realApiClient.bookAppointment(
           appointmentData
         );
-        console.log("✅ Appointment booked:", appointmentResponse);
 
         dispatch({ type: "SUBMIT_SUCCESS" });
 
         setTimeout(() => {
           const appointmentSection = document.getElementById("appointment");
           if (appointmentSection) {
-            appointmentSection.scrollIntoView({
+            const navHeight = 64;
+            const elementPosition = appointmentSection.offsetTop - navHeight;
+            window.scrollTo({
+              top: elementPosition,
               behavior: "smooth",
-              block: "center",
             });
           }
         }, 100);
@@ -136,7 +170,6 @@ const AppointmentBooking = () => {
           dispatch({ type: "RESET_FORM" });
         }, 8000);
       } catch (error) {
-        console.error("❌ Appointment booking failed:", error);
         alert("Appointment booking failed. Please try again.");
       } finally {
         dispatch({ type: "SET_IS_SUBMITTING", payload: false });
@@ -167,7 +200,9 @@ const AppointmentBooking = () => {
           </p>
           <div className="bg-accent p-4 rounded-lg mb-4">
             <p className="text-sm text-accent-foreground">
-              <strong>Doctor:</strong> {selectedDoctorData?.display_name}
+              <strong>Doctor:</strong>{" "}
+              {selectedDoctorData?.member_username ||
+                `Doctor ${selectedDoctorData?.employee_id}`}
               <br />
               <strong>Date:</strong>{" "}
               {new Date(selectedDate).toLocaleDateString("en-IN", {
@@ -195,22 +230,23 @@ const AppointmentBooking = () => {
         <StepIndicator currentStep={currentStep} />
 
         {currentStep === 1 && (
-          <Step1DoctorSelection
+          <DoctorSelectionStep
             doctors={doctors}
             selectedDoctorId={selectedDoctor}
             onDoctorSelect={(doctorId) =>
               dispatch({ type: "SET_SELECTED_DOCTOR", payload: doctorId })
             }
             onNext={handleNextStep}
-            isLoading={false}
+            isLoading={isLoadingDoctors}
           />
         )}
 
         {currentStep === 2 && (
-          <Step2DateTimeSelection
+          <DateTimeSelection
             selectedDate={selectedDate}
             selectedTime={selectedTime}
             selectedDoctor={selectedDoctorData}
+            apiSlots={apiSlots}
             onDateSelect={(date) =>
               dispatch({ type: "SET_SELECTED_DATE", payload: date })
             }
@@ -223,7 +259,7 @@ const AppointmentBooking = () => {
         )}
 
         {currentStep === 3 && (
-          <Step3PersonalDetails
+          <PersonalDetails
             patientName={patientName}
             patientPhone={patientPhone}
             patientEmail={patientEmail}

@@ -1,5 +1,3 @@
-// API Types based on the provided specifications
-
 export interface Doctor {
   primary_key: string;
   facility_id: string;
@@ -62,7 +60,6 @@ export interface AppointmentBookingRequest {
   start_time: string;
 }
 
-// Response types
 export interface ApiResponse<T> {
   data: T;
   status: number;

@@ -1,8 +1,6 @@
 import React from "react";
 import { Star, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-
 interface DoctorCardProps {
   id: string;
   name: string;
@@ -59,7 +57,6 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
     >
       <CardContent className="p-6">
         <div className="flex items-start space-x-4">
-          {/* Doctor Image */}
           <div className="flex-shrink-0">
             <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 border-2 border-gray-200">
               {image ? (
@@ -76,7 +73,6 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
             </div>
           </div>
 
-          {/* Doctor Info */}
           <div className="flex-1 min-w-0">
             <div className="mb-2">
               <h3 className="text-lg font-semibold text-gray-900 truncate">
@@ -88,12 +84,10 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
               )}
             </div>
 
-            {/* Rating */}
             <div className="flex items-center space-x-1 mb-3">
               {renderStars()}
             </div>
 
-            {/* Testimonial */}
             {testimonial && (
               <div className="mb-4">
                 <p
@@ -109,7 +103,6 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
               </div>
             )}
 
-            {/* Availability Info */}
             {(availableFrom || workingHours) && (
               <div className="space-y-1 mb-4 text-sm">
                 {availableFrom && (
@@ -129,7 +122,6 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
               </div>
             )}
 
-            {/* Action Buttons */}
             {showChooseButton && (
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
