@@ -3,16 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
+import { Doctor } from "@/types/api";
 
-interface Doctor {
-  employee_id: string;
-  display_name?: string;
-  specialization?: string;
-  experience?: string;
-  image?: string;
-}
-
-interface Step3PersonalDetailsProps {
+interface PersonalDetailsProps {
   patientName: string;
   patientPhone: string;
   patientEmail: string;
@@ -27,7 +20,7 @@ interface Step3PersonalDetailsProps {
   isSubmitting?: boolean;
 }
 
-const Step3PersonalDetails = ({
+const PersonalDetails = ({
   patientName,
   patientPhone,
   patientEmail,
@@ -40,8 +33,7 @@ const Step3PersonalDetails = ({
   onSubmit,
   onPrevious,
   isSubmitting = false,
-}: Step3PersonalDetailsProps) => {
-  // Split patient name into first and last name
+}: PersonalDetailsProps) => {
   const nameParts = patientName.split(" ");
   const firstName = nameParts[0] || "";
   const lastName = nameParts.slice(1).join(" ") || "";
@@ -54,9 +46,13 @@ const Step3PersonalDetails = ({
     onNameChange(`${firstName} ${last}`.trim());
   };
 
-  // Format date for display
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "";
+  interface DisplayDateInfo {
+    day: string;
+    date: string;
+  }
+
+  const formatDate = (dateString: string): DisplayDateInfo | null => {
+    if (!dateString) return null;
     const date = new Date(dateString);
     return {
       day: date.toLocaleDateString("en-US", { weekday: "long" }),
@@ -64,40 +60,37 @@ const Step3PersonalDetails = ({
     };
   };
 
-  // Transform doctor data for display
   const transformDoctorData = (doctor: Doctor) => {
-    const doctorName = doctor.display_name || `Doctor ${doctor.employee_id}`;
+    const doctorName = doctor.member_username || `Doctor ${doctor.employee_id}`;
+    const specialization = doctor.medical_specialty_type_code
+      ? doctor.medical_specialty_type_code
+          .replace(/_/g, " ")
+          .toLowerCase()
+          .replace(/\b\w/g, (l) => l.toUpperCase())
+      : "General Dentist";
 
-    const generateHash = (str: string) => {
-      return str.split("").reduce((a, b) => {
-        a = (a << 5) - a + b.charCodeAt(0);
-        return a & a;
-      }, 0);
+    const getDoctorImage = (employeeId: string) => {
+      switch (employeeId) {
+        case "E314864344":
+          return "/src/assets/dr-anurag-aggarwal.jpg";
+        case "E314864345":
+          return "/src/assets/dr-kavya-reddy.jpg";
+        case "E314864346":
+          return "/src/assets/dr-vikram-singh-new.jpg";
+        default:
+          return "/src/assets/doctor-1.jpg";
+      }
     };
-
-    const testimonials = [
-      `Best dental appointment I have had in years, seriously. I would highly...`,
-      `Great experience! Very professional and caring approach to treatment...`,
-      `Excellent service. The procedure was painless and results exceeded...`,
-    ];
-
-    const availabilityDates = [
-      "10th February",
-      "11th February",
-      "12th February",
-    ];
-    const workingHours = ["10:30 am - 8 pm", "9 am - 7 pm", "10 am - 7 pm"];
-
-    const hash = Math.abs(generateHash(doctor.employee_id));
 
     return {
       name: doctorName,
-      specialization: doctor.specialization || "General Dentist",
-      experience: doctor.experience,
-      image: doctor.image,
-      testimonial: testimonials[hash % testimonials.length],
-      availableFrom: availabilityDates[hash % availabilityDates.length],
-      workingHours: workingHours[hash % workingHours.length],
+      specialization: specialization,
+      experience: "5+ Years",
+      image: getDoctorImage(doctor.employee_id),
+      testimonial:
+        "Excellent dental care! Very professional and made me feel comfortable throughout the visit.",
+      availableFrom: "Available Now",
+      workingHours: "9 am - 6 pm",
     };
   };
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,10 +116,8 @@ const Step3PersonalDetails = ({
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column - Form */}
         <div className="lg:col-span-2 flex flex-col justify-between min-h-full">
           <div className="space-y-8 flex-1 flex flex-col justify-center">
-            {/* Name Fields */}
             <div className="space-y-4">
               <Label className="text-base font-medium text-gray-900">
                 Your name:
@@ -149,7 +140,6 @@ const Step3PersonalDetails = ({
               </div>
             </div>
 
-            {/* Date of Birth */}
             <div className="space-y-3">
               <Label className="text-base font-medium text-gray-900">
                 Date of birth:
@@ -160,7 +150,6 @@ const Step3PersonalDetails = ({
               </div>
             </div>
 
-            {/* Email and Phone */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-900">
@@ -179,7 +168,7 @@ const Step3PersonalDetails = ({
                 </Label>
                 <Input
                   type="tel"
-                  placeholder="38 (0__) _______"
+                  placeholder="+91 38 (0__) _______"
                   value={patientPhone}
                   onChange={handlePhoneChange}
                   required
@@ -189,17 +178,15 @@ const Step3PersonalDetails = ({
           </div>
         </div>
 
-        {/* Right Column - Cards */}
         <div className="space-y-6">
-          {/* Scheduled For Card */}
           <Card className="shadow-sm">
             <CardContent className="p-4">
               <div className="bg-orange-50 rounded-lg p-3 text-center">
                 <div className="text-lg font-semibold text-blue-600 mb-1">
-                  {dateInfo.day}
+                  {dateInfo?.day}
                 </div>
                 <div className="text-2xl font-bold text-gray-900 mb-2">
-                  {dateInfo.date}
+                  {dateInfo?.date}
                 </div>
                 <div className="text-xl font-semibold text-gray-900">
                   {selectedTime}
@@ -208,7 +195,6 @@ const Step3PersonalDetails = ({
             </CardContent>
           </Card>
 
-          {/* Scheduled To Card */}
           {doctorData && (
             <Card className="shadow-sm">
               <CardContent className="p-4">
@@ -261,7 +247,6 @@ const Step3PersonalDetails = ({
         </div>
       </div>
 
-      {/* Navigation Buttons - Below both form and cards */}
       <div className="flex justify-between pt-4">
         <Button variant="outline" onClick={onPrevious}>
           Previous
@@ -278,4 +263,4 @@ const Step3PersonalDetails = ({
   );
 };
 
-export default Step3PersonalDetails;
+export default PersonalDetails;

@@ -1,17 +1,19 @@
-import { useEffect, useMemo, useReducer, useRef } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { CheckCircle } from "lucide-react";
 import { realApiClient, API_CONFIG_EXPORT } from "@/lib/api-client-real";
 import { appointmentReducer, initialState } from "@/state/appointment";
-import { DOCTORS as STATIC_DOCTORS, UIDoctor } from "@/data/doctors";
+import { Doctor } from "@/types/api";
 import { Card, CardContent } from "@/components/ui/card";
 import StepIndicator from "@/components/StepIndicator";
-import Step1DoctorSelection from "@/components/Step1DoctorSelection";
-import Step2DateTimeSelection from "@/components/Step2DateTimeSelection";
-import Step3PersonalDetails from "@/components/Step3PersonalDetails";
+import DoctorSelectionStep from "@/components/DoctorSelectionStep";
+import DateTimeSelection from "@/components/DateTimeSelection";
+import PersonalDetails from "@/components/PersonalDetails";
 
 const AppointmentBooking = () => {
   const [state, dispatch] = useReducer(appointmentReducer, initialState);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [isLoadingDoctors, setIsLoadingDoctors] = useState(true);
 
   const {
     form: {
@@ -26,11 +28,27 @@ const AppointmentBooking = () => {
     api: { slots: apiSlots },
   } = state;
 
-  const doctors: UIDoctor[] = useMemo(() => STATIC_DOCTORS, []);
   const selectedDoctorData = useMemo(
     () => doctors.find((d) => d.employee_id === selectedDoctor) || null,
     [doctors, selectedDoctor]
   );
+
+  useEffect(() => {
+    const loadDoctors = async () => {
+      try {
+        const response = await realApiClient.getDoctors(
+          API_CONFIG_EXPORT.facilityId
+        );
+        setDoctors(response);
+      } catch (error) {
+        setDoctors([]);
+      } finally {
+        setIsLoadingDoctors(false);
+      }
+    };
+
+    loadDoctors();
+  }, []);
 
   useEffect(() => {
     containerRef.current?.scrollIntoView({
@@ -46,7 +64,6 @@ const AppointmentBooking = () => {
           console.log("📅 Loading appointment slots from API...");
 
           if (selectedDoctorData && selectedDoctorData.primary_key) {
-            // Use tomorrow's date to get slots for the week
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             const tomorrowDate = tomorrow.toISOString().split("T")[0];
@@ -171,7 +188,9 @@ const AppointmentBooking = () => {
           </p>
           <div className="bg-accent p-4 rounded-lg mb-4">
             <p className="text-sm text-accent-foreground">
-              <strong>Doctor:</strong> {selectedDoctorData?.display_name}
+              <strong>Doctor:</strong>{" "}
+              {selectedDoctorData?.member_username ||
+                `Doctor ${selectedDoctorData?.employee_id}`}
               <br />
               <strong>Date:</strong>{" "}
               {new Date(selectedDate).toLocaleDateString("en-IN", {
@@ -199,19 +218,19 @@ const AppointmentBooking = () => {
         <StepIndicator currentStep={currentStep} />
 
         {currentStep === 1 && (
-          <Step1DoctorSelection
+          <DoctorSelectionStep
             doctors={doctors}
             selectedDoctorId={selectedDoctor}
             onDoctorSelect={(doctorId) =>
               dispatch({ type: "SET_SELECTED_DOCTOR", payload: doctorId })
             }
             onNext={handleNextStep}
-            isLoading={false}
+            isLoading={isLoadingDoctors}
           />
         )}
 
         {currentStep === 2 && (
-          <Step2DateTimeSelection
+          <DateTimeSelection
             selectedDate={selectedDate}
             selectedTime={selectedTime}
             selectedDoctor={selectedDoctorData}
@@ -228,7 +247,7 @@ const AppointmentBooking = () => {
         )}
 
         {currentStep === 3 && (
-          <Step3PersonalDetails
+          <PersonalDetails
             patientName={patientName}
             patientPhone={patientPhone}
             patientEmail={patientEmail}

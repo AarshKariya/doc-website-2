@@ -1,22 +1,22 @@
 import { Button } from "@/components/ui/button";
 import DoctorSelection from "@/components/DoctorSelection";
-import { UIDoctor } from "@/data/doctors";
+import { Doctor } from "@/types/api";
 
-interface Step1DoctorSelectionProps {
-  doctors: UIDoctor[];
+interface DoctorSelectionStepProps {
+  doctors: Doctor[];
   selectedDoctorId: string;
   onDoctorSelect: (doctorId: string) => void;
   onNext: () => void;
   isLoading: boolean;
 }
 
-const Step1DoctorSelection = ({
+const DoctorSelectionStep = ({
   doctors,
   selectedDoctorId,
   onDoctorSelect,
   onNext,
   isLoading,
-}: Step1DoctorSelectionProps) => {
+}: DoctorSelectionStepProps) => {
   return (
     <div className="space-y-6">
       {/* Doctor Selection */}
@@ -42,4 +42,4 @@ const Step1DoctorSelection = ({
   );
 };
 
-export default Step1DoctorSelection;
+export default DoctorSelectionStep;

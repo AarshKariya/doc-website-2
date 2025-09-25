@@ -2,17 +2,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import DoctorCard from "./DoctorCard";
-import { AppointmentSchedule } from "@/types/api";
+import { AppointmentSchedule, Doctor } from "@/types/api";
 
-interface Doctor {
-  employee_id: string;
-  display_name?: string;
-  specialization?: string;
-  experience?: string;
-  image?: string;
-}
-
-interface Step2DateTimeSelectionProps {
+interface DateTimeSelectionProps {
   selectedDate: string;
   selectedTime: string;
   selectedDoctor: Doctor | null;
@@ -23,7 +15,7 @@ interface Step2DateTimeSelectionProps {
   onPrevious: () => void;
 }
 
-const Step2DateTimeSelection = ({
+const DateTimeSelection = ({
   selectedDate,
   selectedTime,
   selectedDoctor,
@@ -32,47 +24,39 @@ const Step2DateTimeSelection = ({
   onTimeSelect,
   onNext,
   onPrevious,
-}: Step2DateTimeSelectionProps) => {
+}: DateTimeSelectionProps) => {
   const transformDoctorForCard = (doctor: Doctor) => {
-    const doctorName = doctor.display_name || `Doctor ${doctor.employee_id}`;
+    const doctorName = doctor.member_username || `Doctor ${doctor.employee_id}`;
+    const specialization = doctor.medical_specialty_type_code
+      ? doctor.medical_specialty_type_code
+          .replace(/_/g, " ")
+          .toLowerCase()
+          .replace(/\b\w/g, (l) => l.toUpperCase())
+      : "General Dentist";
 
-    const generateHash = (str: string) => {
-      return str.split("").reduce((a, b) => {
-        a = (a << 5) - a + b.charCodeAt(0);
-        return a & a;
-      }, 0);
+    const getDoctorImage = (employeeId: string) => {
+      switch (employeeId) {
+        case "E314864344":
+          return "/src/assets/dr-anurag-aggarwal.jpg";
+        case "E314864345":
+          return "/src/assets/dr-kavya-reddy.jpg";
+        case "E314864346":
+          return "/src/assets/dr-vikram-singh-new.jpg";
+        default:
+          return "/src/assets/doctor-1.jpg";
+      }
     };
-
-    const testimonials = [
-      `Great experience with ${
-        doctorName.split(" ")[1]
-      }! Very professional and caring approach to dental treatment.`,
-      `${
-        doctorName.split(" ")[1]
-      } was excellent. The procedure was painless and the results exceeded my expectations.`,
-      `Highly recommend ${
-        doctorName.split(" ")[1]
-      }. Very knowledgeable and made me feel comfortable throughout the visit.`,
-    ];
-
-    const availabilityDates = [
-      "10th February",
-      "11th February",
-      "12th February",
-    ];
-    const workingHours = ["9 am - 7 pm", "10 am - 7 pm", "10:30 am - 8 pm"];
-
-    const hash = Math.abs(generateHash(doctor.employee_id));
 
     return {
       id: doctor.employee_id,
       name: doctorName,
-      specialization: doctor.specialization || "General Dentist",
-      experience: doctor.experience,
-      image: doctor.image,
-      testimonial: testimonials[hash % testimonials.length],
-      availableFrom: availabilityDates[hash % availabilityDates.length],
-      workingHours: workingHours[hash % workingHours.length],
+      specialization: specialization,
+      experience: "5+ Years",
+      image: getDoctorImage(doctor.employee_id),
+      testimonial:
+        "Excellent dental care! Very professional and made me feel comfortable throughout the visit.",
+      availableFrom: "Available Now",
+      workingHours: "9 am - 6 pm",
     };
   };
 
@@ -94,7 +78,6 @@ const Step2DateTimeSelection = ({
     return dates;
   };
 
-  // Extract time slots from API response
   const getTimeSlotsForDay = (dayOfWeek: string) => {
     const scheduleForDay = apiSlots.find(
       (s) => s.day_of_the_week === dayOfWeek
@@ -103,7 +86,6 @@ const Step2DateTimeSelection = ({
       return [];
     }
 
-    // Generate time slots based on session intervals
     const timeSlots: { time: string; available: boolean }[] = [];
     scheduleForDay.sessions.forEach((session) => {
       const startTime = session.start_time;
@@ -111,14 +93,12 @@ const Step2DateTimeSelection = ({
       const duration = session.duration_mins;
       const isAvailable = session.status;
 
-      // Parse start and end times
       const [startHour, startMin] = startTime.split(":").map(Number);
       const [endHour, endMin] = endTime.split(":").map(Number);
 
       const startMinutes = startHour * 60 + startMin;
       const endMinutes = endHour * 60 + endMin;
 
-      // Generate slots every duration minutes
       for (
         let minutes = startMinutes;
         minutes < endMinutes;
@@ -235,4 +215,4 @@ const Step2DateTimeSelection = ({
   );
 };
 
-export default Step2DateTimeSelection;
+export default DateTimeSelection;
